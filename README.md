@@ -3,7 +3,6 @@
 <p align="center">
   <b>AI-Powered Dental Assistant with Voice Agent, Appointment Booking & Admin Dashboard</b>
 </p>
----
 
 ## ✨ Features
 
