@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import AdminDashboardClient from "./AdminDashboardClient";
@@ -14,7 +16,7 @@ async function AdminPage() {
   // user is not the admin
   if (!adminEmail || userEmail !== adminEmail) redirect("/dashboard");
 
-  return <AdminDashboardClient/>;
+  return <AdminDashboardClient />;
 }
 
 export default AdminPage;

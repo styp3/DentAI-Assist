@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ActivityOverview from "@/components/dashboard/ActivityOverview";
 import MainActions from "@/components/dashboard/MainActions";
 import Navbar from "@/components/Navbar";
