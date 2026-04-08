@@ -24,6 +24,18 @@ export async function POST(request: Request) {
       );
     }
 
+    const demoMode = process.env.DEMO_MODE === "true";
+    if (demoMode) {
+      return NextResponse.json(
+        {
+          message: "Demo mode enabled: email send mocked successfully",
+          emailId: "demo-mode-email-id",
+          demoMode: true,
+        },
+        { status: 200 }
+      );
+    }
+
     // send the email
     const { data, error } = await resend.emails.send({
       from: "DentAI Assist <onboarding@resend.dev>",

@@ -22,6 +22,14 @@
 
 ---
 
+## 📚 Project Docs
+
+- Demo runbook: [`docs/DEMO_RUNBOOK.md`](./docs/DEMO_RUNBOOK.md)
+- Agent implementation guide: [`AGENTS.md`](./AGENTS.md)
+- Security/key rotation: [`docs/SECURITY_KEYS.md`](./docs/SECURITY_KEYS.md)
+
+---
+
 ## 🛠️ Tech Stack
 
 | Category | Technology |
@@ -51,8 +59,8 @@ CLERK_SECRET_KEY=your_clerk_secret_key
 # Clerk Redirect URLs
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/chat
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/chat
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
 
 # Database
 DATABASE_URL=your_neon_postgres_url
@@ -67,8 +75,17 @@ ADMIN_EMAIL=your_admin_email
 # Resend Email
 RESEND_API_KEY=your_resend_api_key
 
+# Demo mode (optional)
+DEMO_MODE=false
+
 # App URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+Quick start template:
+
+```bash
+cp .env.example .env.local
 ```
 
 ---
@@ -91,7 +108,8 @@ npm install
 ### 3. Setup database
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma generate
+npx prisma db push
 ```
 
 ### 4. Run the development server
@@ -101,6 +119,19 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### 5. Optional demo data reset
+
+```bash
+npm run demo:reset -- --yes
+```
+
+### 6. Demo account notes
+
+- `ADMIN_EMAIL` must exactly match the sign-in email that should access `/admin`.
+- Resend test-mode accounts may only send to allowed recipients.
+- For unrestricted sending, verify a domain in Resend and use a sender from that domain.
+- If you want stable demos even when email providers are flaky, set `DEMO_MODE=true` to mock successful email sends.
 
 ---
 
