@@ -21,6 +21,12 @@ import { cn } from "@/lib/utils";
 type DemoMode = "circlewaveform" | "siri" | "glob";
 type StageCallState = "idle" | "connecting" | "active" | "ended" | "error";
 type VisualPhase = "idle" | "connecting" | "active" | "settled";
+type ModeAccent = {
+  border: string;
+  glow: string;
+  sweep: string;
+  wash: string;
+};
 
 const MODES: Array<{ value: DemoMode; label: string; description: string }> = [
   {
@@ -31,7 +37,7 @@ const MODES: Array<{ value: DemoMode; label: string; description: string }> = [
   {
     value: "siri",
     label: "Siri",
-    description: "Linear wave motion with a clean glass frame.",
+    description: "Edge-to-edge carrier wave with a fluid sweep.",
   },
   {
     value: "glob",
@@ -43,6 +49,36 @@ const MODES: Array<{ value: DemoMode; label: string; description: string }> = [
 const EASE_EXPO_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const EASE_QUART_OUT: [number, number, number, number] = [0.25, 1, 0.5, 1];
 const EASE_EXPO_IN_OUT: [number, number, number, number] = [0.87, 0, 0.13, 1];
+
+function getModeAccent(mode: DemoMode): ModeAccent {
+  if (mode === "circlewaveform") {
+    return {
+      border: "rgba(94, 234, 212, 0.18)",
+      glow: "rgba(34, 211, 238, 0.12)",
+      sweep:
+        "linear-gradient(115deg, rgba(34,211,238,0.08), transparent 34%, rgba(45,212,191,0.06) 70%, transparent)",
+      wash: "radial-gradient(circle at 50% 48%, rgba(45,212,191,0.12), transparent 68%)",
+    };
+  }
+
+  if (mode === "siri") {
+    return {
+      border: "rgba(125, 211, 252, 0.18)",
+      glow: "rgba(56, 189, 248, 0.12)",
+      sweep:
+        "linear-gradient(90deg, transparent 0%, rgba(103,232,249,0.08) 22%, rgba(125,211,252,0.14) 50%, rgba(103,232,249,0.08) 78%, transparent 100%)",
+      wash: "radial-gradient(circle at 50% 50%, rgba(56,189,248,0.12), transparent 70%)",
+    };
+  }
+
+  return {
+    border: "rgba(216, 180, 254, 0.18)",
+    glow: "rgba(192, 132, 252, 0.12)",
+    sweep:
+      "linear-gradient(125deg, rgba(217,70,239,0.08), transparent 32%, rgba(34,211,238,0.06) 72%, transparent)",
+    wash: "radial-gradient(circle at 50% 46%, rgba(192,132,252,0.14), transparent 66%)",
+  };
+}
 
 function formatCaptionTime(timestamp: number) {
   const date = new Date(timestamp);
@@ -82,18 +118,13 @@ function getStageMotion(mode: DemoMode, phase: VisualPhase, reducedMotion: boole
   if (mode === "circlewaveform") {
     return {
       animate: {
-        scale: phase === "connecting" ? [1, 1.012, 1] : phase === "active" ? [1, 1.008, 1] : 1,
-        rotate:
-          phase === "connecting"
-            ? [0, 0.25, -0.15, 0]
-            : phase === "idle"
-              ? [0, -0.12, 0.12, 0]
-              : 0,
-        y: phase === "connecting" ? [0, -1.2, 0] : [0, 0, 0],
+        scale: phase === "connecting" ? [1, 1.01, 1] : phase === "active" ? [1, 1.004, 1] : 1,
+        rotate: phase === "connecting" ? [0, 0.18, -0.12, 0] : 0,
+        y: phase === "connecting" ? [0, -0.8, 0] : [0, 0, 0],
       },
       transition: {
-        duration: phase === "connecting" ? 1.9 : phase === "active" ? 2.8 : 3.8,
-        repeat: Number.POSITIVE_INFINITY,
+        duration: phase === "connecting" ? 1.9 : phase === "active" ? 3.4 : 0.32,
+        repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
         ease: EASE_QUART_OUT,
       },
     };
@@ -102,13 +133,13 @@ function getStageMotion(mode: DemoMode, phase: VisualPhase, reducedMotion: boole
   if (mode === "siri") {
     return {
       animate: {
-        scale: phase === "connecting" ? [1, 1.01, 1] : phase === "active" ? [1, 1.006, 1] : 1,
-        rotate: phase === "connecting" ? [0, 0.16, -0.16, 0] : 0,
-        y: phase === "connecting" ? [0, -0.8, 0] : [0, 0, 0],
+        scale: phase === "connecting" ? [1, 1.008, 1] : phase === "active" ? [1, 1.003, 1] : 1,
+        rotate: phase === "connecting" ? [0, 0.1, -0.1, 0] : 0,
+        y: phase === "connecting" ? [0, -0.5, 0] : [0, 0, 0],
       },
       transition: {
-        duration: phase === "connecting" ? 1.6 : 2.6,
-        repeat: Number.POSITIVE_INFINITY,
+        duration: phase === "connecting" ? 1.6 : phase === "active" ? 3.2 : 0.28,
+        repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
         ease: EASE_QUART_OUT,
       },
     };
@@ -116,21 +147,78 @@ function getStageMotion(mode: DemoMode, phase: VisualPhase, reducedMotion: boole
 
   return {
     animate: {
-      scale: phase === "connecting" ? [1, 1.015, 1] : phase === "active" ? [1, 1.01, 1] : 1,
-      rotate:
-        phase === "connecting"
-          ? [0, 0.7, -0.35, 0]
-          : phase === "idle"
-            ? [0, -0.25, 0.25, 0]
-            : 0,
-      y: phase === "idle" ? [0, -1.4, 0] : [0, -0.8, 0],
+      scale: phase === "connecting" ? [1, 1.012, 1] : phase === "active" ? [1, 1.004, 1] : 1,
+      rotate: phase === "connecting" ? [0, 0.45, -0.2, 0] : 0,
+      y: phase === "connecting" ? [0, -0.6, 0] : [0, 0, 0],
     },
     transition: {
-      duration: phase === "connecting" ? 2.4 : phase === "active" ? 3 : 4,
-      repeat: Number.POSITIVE_INFINITY,
+      duration: phase === "connecting" ? 2.4 : phase === "active" ? 3.8 : 0.28,
+      repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
       ease: EASE_QUART_OUT,
     },
   };
+}
+
+function StageAccent({
+  mode,
+  phase,
+  reducedMotion,
+  energy,
+}: {
+  mode: DemoMode;
+  phase: VisualPhase;
+  reducedMotion: boolean;
+  energy: number;
+}) {
+  const accent = getModeAccent(mode);
+  const phaseOpacity =
+    phase === "connecting" ? 0.82 : phase === "active" ? 0.74 : phase === "settled" ? 0.24 : 0.18;
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-0 z-10 rounded-[1.4rem]"
+      initial={false}
+      animate={
+        reducedMotion
+          ? { opacity: phaseOpacity, scale: 1 }
+          : {
+              opacity:
+                phase === "connecting"
+                  ? [phaseOpacity * 0.72, phaseOpacity, phaseOpacity * 0.72]
+                  : phase === "active"
+                    ? [phaseOpacity * 0.84, phaseOpacity + Math.min(0.08, energy * 0.18), phaseOpacity * 0.84]
+                    : phaseOpacity,
+              scale:
+                phase === "connecting"
+                  ? [0.994, 1, 0.994]
+                  : phase === "active"
+                    ? [0.998, 1.003, 0.998]
+                    : 1,
+            }
+      }
+      transition={{
+        duration: phase === "connecting" ? 1.2 : phase === "active" ? 2.1 : 0.35,
+        repeat: reducedMotion || phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+        ease: EASE_QUART_OUT,
+      }}
+    >
+      <div
+        className="absolute inset-0 rounded-[1.4rem] border"
+        style={{
+          borderColor: accent.border,
+          boxShadow: `inset 0 0 42px ${accent.glow}`,
+        }}
+      />
+      <div
+        className="absolute inset-0 rounded-[1.4rem] opacity-80"
+        style={{ backgroundImage: accent.sweep }}
+      />
+      <div
+        className="absolute inset-[12%] rounded-[1.2rem] blur-3xl"
+        style={{ backgroundImage: accent.wash }}
+      />
+    </motion.div>
+  );
 }
 
 function ModePrelude({
@@ -165,7 +253,7 @@ function ModePrelude({
         className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
         initial={false}
         animate={{
-          opacity: phase === "idle" ? 0.5 : phase === "connecting" ? 0.7 : 0.3,
+          opacity: phase === "idle" ? 0.16 : phase === "connecting" ? 0.38 : 0.2,
         }}
         transition={{ duration: 0.3, ease: EASE_QUART_OUT }}
       >
@@ -177,12 +265,12 @@ function ModePrelude({
             boxShadow: `0 0 24px ${accent}`,
           }}
           animate={{
-            opacity: phase === "connecting" ? [0.3, 0.9, 0.3] : [0.18, 0.5, 0.18],
-            scaleX: phase === "active" ? [0.96, 1.02, 0.96] : [0.98, 1, 0.98],
+            opacity: phase === "connecting" ? [0.28, 0.82, 0.28] : phase === "active" ? [0.16, 0.26, 0.16] : 0.14,
+            scaleX: phase === "connecting" ? [0.98, 1.02, 0.98] : phase === "active" ? [0.992, 1.008, 0.992] : 1,
           }}
           transition={{
             duration: phase === "connecting" ? 0.95 : 1.6,
-            repeat: Number.POSITIVE_INFINITY,
+            repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
             ease: EASE_QUART_OUT,
           }}
         />
@@ -196,7 +284,7 @@ function ModePrelude({
         className="pointer-events-none absolute inset-0 rounded-[inherit]"
         initial={false}
         animate={{
-          opacity: phase === "idle" ? 0.28 : phase === "connecting" ? 0.4 : 0.18,
+          opacity: phase === "idle" ? 0.12 : phase === "connecting" ? 0.28 : 0.1,
         }}
         transition={{ duration: 0.3, ease: EASE_QUART_OUT }}
       >
@@ -207,12 +295,12 @@ function ModePrelude({
             boxShadow: `0 0 36px ${accent}`,
           }}
           animate={{
-            scale: phase === "connecting" ? [0.86, 1.06, 1.18] : [0.94, 1.02, 1.1],
-            opacity: phase === "connecting" ? [0.3, 0.7, 0] : [0.18, 0.45, 0],
+            scale: phase === "connecting" ? [0.88, 1.06, 1.16] : phase === "active" ? [0.98, 1.03, 1.08] : 1,
+            opacity: phase === "connecting" ? [0.24, 0.62, 0] : phase === "active" ? [0.12, 0.26, 0] : 0.12,
           }}
           transition={{
             duration: phase === "connecting" ? 0.85 : 1.35,
-            repeat: Number.POSITIVE_INFINITY,
+            repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
             ease: EASE_EXPO_OUT,
           }}
         />
@@ -225,7 +313,7 @@ function ModePrelude({
       className="pointer-events-none absolute inset-0 rounded-[inherit]"
       initial={false}
       animate={{
-        opacity: phase === "idle" ? 0.3 : phase === "connecting" ? 0.55 : 0.25,
+        opacity: phase === "idle" ? 0.12 : phase === "connecting" ? 0.28 : 0.16,
       }}
       transition={{ duration: 0.3, ease: EASE_QUART_OUT }}
     >
@@ -236,11 +324,11 @@ function ModePrelude({
             "radial-gradient(circle at 50% 35%, rgba(255,255,255,0.03), transparent 58%)",
         }}
         animate={{
-          scale: phase === "active" ? [0.985, 1.015, 0.985] : [1, 1.01, 1],
+          scale: phase === "connecting" ? [0.992, 1.01, 0.992] : phase === "active" ? [0.996, 1.006, 0.996] : 1,
         }}
         transition={{
           duration: phase === "connecting" ? 1.0 : 2.4,
-          repeat: Number.POSITIVE_INFINITY,
+          repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
           ease: EASE_EXPO_IN_OUT,
         }}
       />
@@ -305,7 +393,7 @@ function CircleWaveformMode({
       }
       transition={{
         duration: phase === "connecting" ? 1.8 : phase === "active" ? 2.6 : 3.8,
-        repeat: Number.POSITIVE_INFINITY,
+        repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
         ease: EASE_QUART_OUT,
       }}
     >
@@ -319,19 +407,29 @@ function CircleWaveformMode({
           reducedMotion
             ? { scale: 1 }
             : {
-                scale: phase === "active" ? [1, 1.01, 1] : phase === "connecting" ? [0.99, 1.01, 0.99] : 1,
-                rotate: phase === "active" ? 0 : phase === "idle" ? [0, -0.5, 0.5, 0] : 0,
+                scale:
+                  phase === "active"
+                    ? [1, 1.01, 1]
+                    : phase === "connecting"
+                      ? [0.985, 1.016, 0.985]
+                      : 1,
+                rotate:
+                  phase === "connecting"
+                    ? [0, 2.4, 0, -2.4, 0]
+                    : phase === "idle"
+                      ? [0, -0.5, 0.5, 0]
+                      : 0,
               }
         }
-        transition={
-          reducedMotion
-            ? { duration: 0 }
-            : {
-                duration: phase === "active" ? 2.2 : 3.6,
-                repeat: Number.POSITIVE_INFINITY,
+      transition={
+        reducedMotion
+          ? { duration: 0 }
+          : {
+                duration: phase === "connecting" ? 1.25 : phase === "active" ? 2.2 : 3.6,
+                repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
                 ease: EASE_QUART_OUT,
               }
-        }
+      }
       >
         {bars.map((bar, index) => (
           <motion.line
@@ -399,6 +497,45 @@ function CircleWaveformMode({
           }
           transition={{ duration: 0.22, ease: EASE_QUART_OUT }}
         >
+          <motion.span
+            className="pointer-events-none absolute -inset-4 rounded-[2rem] border border-cyan-200/16"
+            animate={
+              reducedMotion
+                ? { opacity: phase === "connecting" ? 0.45 : 0 }
+                : {
+                    opacity: phase === "connecting" ? [0.18, 0.62, 0.18] : active ? 0.16 : 0,
+                    scale:
+                      phase === "connecting"
+                        ? [0.92, 1.08, 0.92]
+                        : active
+                          ? [1, 1.03, 1]
+                          : 1,
+                    rotate: phase === "connecting" ? 360 : 0,
+                  }
+            }
+            transition={{
+              duration: phase === "connecting" ? 1.15 : 2.4,
+              repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
+              ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
+            }}
+          />
+          <motion.span
+            className="pointer-events-none absolute -inset-7 rounded-[2.25rem] border border-cyan-100/10"
+            animate={
+              reducedMotion
+                ? { opacity: phase === "connecting" ? 0.28 : 0 }
+                : {
+                    opacity: phase === "connecting" ? [0.08, 0.34, 0.08] : 0,
+                    scale: phase === "connecting" ? [0.98, 1.12, 0.98] : 1,
+                    rotate: phase === "connecting" ? -360 : 0,
+                  }
+            }
+            transition={{
+              duration: 1.8,
+              repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
+              ease: "linear",
+            }}
+          />
           <span
             className={cn(
               "absolute inset-0 rounded-3xl border",
@@ -434,12 +571,12 @@ function CircleWaveformMode({
           }
           transition={{
             duration: phase === "connecting" ? 1.05 : 2.2,
-            repeat: Number.POSITIVE_INFINITY,
+            repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
             ease: EASE_EXPO_OUT,
           }}
         >
           {phase === "connecting"
-            ? "Preflight scan"
+            ? "Dialing pulse"
             : active
               ? "Live waveform"
               : "Ready to start"}
@@ -469,16 +606,16 @@ function SiriMode({
     () => ({
       theme: "ios9",
       ratio: 1,
-      speed: active ? 0.08 + reactiveLevel * 0.16 : phase === "connecting" ? 0.07 : 0.04,
-      amplitude: active ? 0.42 + reactiveLevel * 3.0 : phase === "connecting" ? 0.7 : 0.28,
-      frequency: active ? 2.5 + reactiveLevel * 3.8 : phase === "connecting" ? 3.1 : 2.0,
+      speed: active ? 0.1 + reactiveLevel * 0.14 : phase === "connecting" ? 0.08 : 0.04,
+      amplitude: active ? 0.5 + reactiveLevel * 2.6 : phase === "connecting" ? 0.72 : 0.3,
+      frequency: active ? 2.7 + reactiveLevel * 3.4 : phase === "connecting" ? 3.0 : 2.1,
       color: "#67e8f9",
       cover: true,
-      width: 2000,
-      height: 320,
+      width: 2600,
+      height: 340,
       autostart: true,
-      pixelDepth: 0.72,
-      lerpSpeed: 0.06,
+      pixelDepth: 0.5,
+      lerpSpeed: 0.08,
     }),
     [active, phase, reactiveLevel]
   );
@@ -501,78 +638,118 @@ function SiriMode({
       }
       transition={{
         duration: phase === "connecting" ? 1.7 : 2.8,
-        repeat: Number.POSITIVE_INFINITY,
+        repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
         ease: EASE_QUART_OUT,
       }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(34,211,238,0.035),transparent_36%,rgba(37,99,235,0.03)_72%,transparent)]" />
       <ModePrelude mode="siri" phase={phase} accent="#67e8f9" reducedMotion={reducedMotion} />
 
-      <div className="relative z-10 flex items-start justify-between gap-3 px-4 pb-3 pt-4 sm:px-5">
-        <motion.button
-          type="button"
-          onClick={onToggleCall}
-          aria-label={active ? "End voice demo" : "Start voice demo"}
-          className={cn(
-            "inline-flex size-14 shrink-0 items-center justify-center rounded-2xl border",
-            "border-sky-200/18 bg-[rgba(8,15,24,0.82)] text-sky-50",
-            "shadow-[0_0_24px_rgba(56,189,248,0.1),inset_0_1px_0_rgba(255,255,255,0.04)]",
-            "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-            "hover:border-sky-100/35 hover:bg-[rgba(10,18,28,0.92)] hover:shadow-[0_0_28px_rgba(56,189,248,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
-            "focus-visible:border-sky-100 focus-visible:ring-3 focus-visible:ring-sky-200/55",
-            "active:scale-[0.97]"
-          )}
-          whileHover={reducedMotion ? undefined : { scale: 1.04 }}
-          whileTap={reducedMotion ? undefined : { scale: 0.965 }}
+      <motion.div
+        className="pointer-events-none absolute top-6 left-1/2 z-20 -translate-x-1/2 rounded-full border px-4 py-2 text-xs font-medium tracking-wide"
+        style={{
+          borderColor: phase === "active" ? "rgba(125, 211, 252, 0.24)" : "rgba(255,255,255,0.08)",
+          backgroundColor:
+            phase === "active"
+              ? "rgba(3, 10, 16, 0.86)"
+              : "rgba(3, 8, 12, 0.8)",
+          color: "#e0f2fe",
+          boxShadow:
+            phase === "active"
+              ? "0 0 18px rgba(56, 189, 248, 0.1)"
+              : "0 0 12px rgba(56, 189, 248, 0.06)",
+        }}
+        animate={reducedMotion ? { opacity: 1 } : { opacity: phase === "idle" ? 0.72 : 1 }}
+        transition={{ duration: 0.22, ease: EASE_QUART_OUT }}
+      >
+        {phase === "connecting" ? "Carrier lock" : active ? "Live wave" : "Ready to call"}
+      </motion.div>
+
+      <div className="absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 px-2 sm:px-4 lg:px-6">
+        <motion.div
+          className="relative h-[clamp(220px,28vw,340px)] w-full overflow-hidden"
+          animate={
+            reducedMotion
+              ? { scaleX: 1, opacity: 1 }
+              : {
+                  scaleX: phase === "connecting" ? [0.992, 1.006, 0.992] : 1,
+                  opacity: phase === "idle" ? 0.94 : 1,
+                }
+          }
+          transition={{
+            duration: phase === "connecting" ? 1.1 : 0.35,
+            repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
+            ease: EASE_EXPO_IN_OUT,
+          }}
         >
-          {active ? <PhoneOff className="size-6" /> : <Mic className="size-6" />}
-        </motion.button>
-
-        <div className="max-w-[28rem] text-right">
-          <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-sky-200/70">
-            Siri mode
-          </p>
-          <p className="mt-1 text-sm text-slate-300">
-            Full-width waveform with a lighter, cleaner stage.
-          </p>
-        </div>
-      </div>
-
-      <div className="relative z-10 flex flex-1 min-h-0 px-3 pb-4 sm:px-5">
-        <div className="relative flex h-full min-h-[clamp(230px,32vw,340px)] w-full items-center overflow-hidden rounded-[1.6rem] bg-[rgba(3,7,12,0.72)]">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.08),transparent_66%)]" />
           <motion.div
-            className="pointer-events-none absolute inset-x-[6%] top-1/2 h-px -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(103,232,249,0.12) 18%, rgba(103,232,249,0.55) 50%, rgba(103,232,249,0.12) 82%, transparent 100%)",
-              boxShadow: "0 0 20px rgba(56,189,248,0.14)",
-            }}
+            className="pointer-events-none absolute inset-y-[18%] left-[-12%] w-[24%] rounded-full bg-[radial-gradient(circle,rgba(103,232,249,0.2),transparent_68%)] blur-3xl"
             animate={
               reducedMotion
-                ? { opacity: 0.7 }
+                ? { opacity: 0.45 }
                 : {
                     x:
                       phase === "connecting"
-                        ? ["-6%", "6%", "-6%"]
-                        : phase === "active"
-                          ? ["-3%", "3%", "-3%"]
-                          : ["-2%", "2%", "-2%"],
-                    opacity: phase === "connecting" ? [0.35, 0.95, 0.35] : [0.22, 0.5, 0.22],
-                    scaleX: phase === "connecting" ? [0.92, 1, 0.92] : [0.96, 1, 0.96],
+                        ? ["0%", "360%"]
+                        : active
+                          ? ["20%", "220%", "20%"]
+                          : "0%",
+                    opacity:
+                      phase === "connecting"
+                        ? [0.16, 0.44, 0.16]
+                        : active
+                          ? [0.08, 0.2, 0.08]
+                          : 0.04,
                   }
             }
-            transition={{
-              duration: phase === "connecting" ? 1.15 : 1.8,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: EASE_QUART_OUT,
-            }}
+          transition={{
+            duration: phase === "connecting" ? 1.35 : 4.5,
+            repeat: phase === "connecting" || phase === "active" ? Number.POSITIVE_INFINITY : 0,
+            ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
+          }}
           />
-          <div className="relative h-full w-full">
+          <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[linear-gradient(90deg,transparent,rgba(125,211,252,0.24),rgba(255,255,255,0.42),rgba(125,211,252,0.24),transparent)]" />
+          <div className="relative h-full w-full overflow-hidden">
             <ReactSiriwave {...siriConfig} />
           </div>
-        </div>
+        </motion.div>
       </div>
+
+      <motion.button
+        type="button"
+        onClick={onToggleCall}
+        aria-label={active ? "End voice demo" : "Start voice demo"}
+        className={cn(
+          "absolute bottom-7 left-1/2 z-20 inline-flex -translate-x-1/2 items-center justify-center rounded-2xl border px-5 py-3",
+          "border-sky-200/18 bg-[rgba(8,15,24,0.74)] text-sky-50",
+          "shadow-[0_0_24px_rgba(56,189,248,0.1),inset_0_1px_0_rgba(255,255,255,0.04)]",
+          "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
+          "hover:border-sky-100/35 hover:bg-[rgba(10,18,28,0.92)] hover:shadow-[0_0_28px_rgba(56,189,248,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
+          "focus-visible:border-sky-100 focus-visible:ring-3 focus-visible:ring-sky-200/55",
+          "active:scale-[0.97]"
+        )}
+        whileHover={reducedMotion ? undefined : { scale: 1.04 }}
+        whileTap={reducedMotion ? undefined : { scale: 0.965 }}
+      >
+        <motion.span
+          className="pointer-events-none absolute -inset-4 rounded-[1.35rem] border border-sky-200/14"
+          animate={
+            reducedMotion
+              ? { opacity: phase === "connecting" ? 0.45 : 0 }
+              : {
+                  opacity: phase === "connecting" ? [0.16, 0.58, 0.16] : active ? 0.1 : 0,
+                  scale: phase === "connecting" ? [0.94, 1.08, 0.94] : 1,
+                  rotate: phase === "connecting" ? 360 : 0,
+                }
+          }
+          transition={{
+            duration: phase === "connecting" ? 1.1 : 2.4,
+            repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
+            ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
+          }}
+        />
+        {active ? <PhoneOff className="size-5" /> : <Mic className="size-5" />}
+      </motion.button>
     </motion.div>
   );
 }
@@ -614,13 +791,13 @@ function GlobMode({
             : active
               ? { scale: [0.92, 1.08, 0.92], opacity: [0.24, 0.04, 0.24] }
               : phase === "connecting"
-                ? { scale: [0.96, 1.04, 0.96], opacity: [0.14, 0.32, 0.14] }
+                ? { scale: [0.94, 1.08, 0.94], opacity: [0.14, 0.36, 0.14], rotate: 360 }
                 : { scale: 1, opacity: 0.12 }
         }
         transition={{
-          duration: phase === "active" ? 2.8 : 1.8,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: EASE_EXPO_OUT,
+          duration: phase === "connecting" ? 2.2 : phase === "active" ? 2.8 : 1.8,
+          repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
+          ease: phase === "connecting" ? "linear" : EASE_EXPO_OUT,
         }}
       />
 
@@ -633,13 +810,13 @@ function GlobMode({
             : active
               ? { scale: [0.9, 1.06, 0.9], opacity: [0.18, 0.02, 0.18] }
               : phase === "connecting"
-                ? { scale: [0.95, 1.03, 0.95], opacity: [0.1, 0.22, 0.1] }
+                ? { scale: [0.93, 1.05, 0.93], opacity: [0.1, 0.28, 0.1], rotate: -360 }
                 : { scale: 1, opacity: 0.08 }
         }
         transition={{
-          duration: phase === "active" ? 3.2 : 2.4,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: EASE_EXPO_OUT,
+          duration: phase === "connecting" ? 2.8 : phase === "active" ? 3.2 : 2.4,
+          repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
+          ease: phase === "connecting" ? "linear" : EASE_EXPO_OUT,
           delay: 0.16,
         }}
       />
@@ -650,9 +827,9 @@ function GlobMode({
           reducedMotion
             ? { rotate: 0, scale: 1 }
             : {
-                rotate: phase === "idle" ? 180 : 360,
+                rotate: phase === "connecting" ? 360 : phase === "active" ? 180 : 0,
                 scale,
-                y: phase === "idle" ? [0, -2, 0] : [0, -1, 0],
+                y: phase === "connecting" ? [0, -1, 0] : phase === "active" ? [0, -0.8, 0] : 0,
               }
         }
         transition={
@@ -660,12 +837,14 @@ function GlobMode({
             ? { duration: 0 }
             : {
                 rotate:
-                  phase === "active"
-                    ? { duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
-                    : { duration: 36, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+                  phase === "connecting"
+                    ? { duration: 4.8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
+                    : phase === "active"
+                      ? { duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
+                      : { duration: 0.3, repeat: 0, ease: EASE_QUART_OUT },
                 y: {
                   duration: phase === "active" ? 1.8 : 3.6,
-                  repeat: Number.POSITIVE_INFINITY,
+                  repeat: phase === "active" ? Number.POSITIVE_INFINITY : 0,
                   ease: EASE_QUART_OUT,
                 },
                 scale: { duration: 0.24, ease: EASE_QUART_OUT },
@@ -689,8 +868,38 @@ function GlobMode({
               ? { opacity: 0.7 }
               : { opacity: phase === "connecting" ? [0.35, 0.72, 0.35] : [0.22, 0.5, 0.22] }
           }
-          transition={{ duration: phase === "connecting" ? 0.95 : 1.45, repeat: Number.POSITIVE_INFINITY, ease: EASE_QUART_OUT }}
+          transition={{
+            duration: phase === "connecting" ? 0.95 : 1.45,
+            repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
+            ease: EASE_QUART_OUT,
+          }}
         />
+        <motion.div
+          className="absolute inset-0"
+          animate={
+            reducedMotion
+              ? { rotate: 0, opacity: phase === "connecting" ? 0.7 : 0.45 }
+              : {
+                  rotate: phase === "connecting" ? 360 : 180,
+                  opacity: phase === "connecting" ? [0.24, 0.58, 0.24] : [0.14, 0.28, 0.14],
+                }
+          }
+          transition={{
+            rotate:
+              phase === "connecting"
+                ? { duration: 1.8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
+                : phase === "active"
+                  ? { duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
+                  : { duration: 0.3, repeat: 0, ease: EASE_QUART_OUT },
+            opacity: {
+              duration: phase === "connecting" ? 1.05 : 2.6,
+              repeat: phase === "connecting" || phase === "active" ? Number.POSITIVE_INFINITY : 0,
+              ease: EASE_QUART_OUT,
+            },
+          }}
+        >
+          <div className="absolute left-1/2 top-[3%] size-3 -translate-x-1/2 rounded-full bg-fuchsia-100 shadow-[0_0_22px_rgba(232,121,249,0.55)]" />
+        </motion.div>
       </motion.div>
 
       <motion.button
@@ -709,6 +918,23 @@ function GlobMode({
         whileHover={reducedMotion ? undefined : { scale: 1.03 }}
         whileTap={reducedMotion ? undefined : { scale: 0.965 }}
       >
+        <motion.span
+          className="pointer-events-none absolute -inset-4 rounded-[1rem] border border-fuchsia-200/14"
+          animate={
+            reducedMotion
+              ? { opacity: phase === "connecting" ? 0.45 : 0 }
+              : {
+                  opacity: phase === "connecting" ? [0.16, 0.52, 0.16] : active ? 0.14 : 0,
+                  scale: phase === "connecting" ? [0.94, 1.09, 0.94] : active ? [1, 1.03, 1] : 1,
+                  rotate: phase === "connecting" ? 360 : 0,
+                }
+          }
+          transition={{
+            duration: phase === "connecting" ? 1.2 : 2.2,
+            repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
+            ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
+          }}
+        />
         {active ? <PhoneOff className="size-4" /> : <Mic className="size-4" />}
         {active ? "End call" : "Start call"}
       </motion.button>
@@ -725,11 +951,14 @@ function captionRoleLabel(line: CaptionLine) {
 
 export default function ChatPearlDemoClient() {
   const [mode, setMode] = useState<DemoMode>("circlewaveform");
+  const [displayMode, setDisplayMode] = useState<DemoMode>("circlewaveform");
+  const [incomingMode, setIncomingMode] = useState<DemoMode | null>(null);
   const [showCaptions, setShowCaptions] = useState(true);
   const [smoothedVolume, setSmoothedVolume] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
   const transcriptViewportRef = useRef<HTMLDivElement | null>(null);
+  const transitionTimerRef = useRef<number | null>(null);
 
   const {
     callState,
@@ -768,6 +997,33 @@ export default function ChatPearlDemoClient() {
     node.scrollTop = node.scrollHeight;
   }, [captionRows.length, transcriptViewportRef]);
 
+  useEffect(() => {
+    const previousTimer = transitionTimerRef.current;
+    if (previousTimer) {
+      window.clearTimeout(previousTimer);
+      transitionTimerRef.current = null;
+    }
+
+    if (mode === displayMode) {
+      setIncomingMode(null);
+      return;
+    }
+
+    setIncomingMode(mode);
+    transitionTimerRef.current = window.setTimeout(() => {
+      setDisplayMode(mode);
+      setIncomingMode(null);
+      transitionTimerRef.current = null;
+    }, prefersReducedMotion ? 0 : 180);
+
+    return () => {
+      if (transitionTimerRef.current) {
+        window.clearTimeout(transitionTimerRef.current);
+        transitionTimerRef.current = null;
+      }
+    };
+  }, [displayMode, mode, prefersReducedMotion]);
+
   const stageMotion = useMemo(
     () => getStageMotion(mode, phase, Boolean(prefersReducedMotion)),
     [mode, phase, prefersReducedMotion]
@@ -779,6 +1035,29 @@ export default function ChatPearlDemoClient() {
       return;
     }
     void startCall();
+  };
+
+  const renderModeScene = (sceneMode: DemoMode, layer: "current" | "incoming") => {
+    const sceneProps = {
+      active,
+      phase,
+      volumeLevel,
+      smoothedVolume,
+      reducedMotion: Boolean(prefersReducedMotion),
+      onToggleCall: layer === "current" ? toggleCall : () => {},
+    };
+
+    return (
+      <div className={cn("absolute inset-0", layer === "incoming" && "pointer-events-none")}>
+        {sceneMode === "circlewaveform" ? (
+          <CircleWaveformMode {...sceneProps} />
+        ) : sceneMode === "siri" ? (
+          <SiriMode {...sceneProps} />
+        ) : (
+          <GlobMode {...sceneProps} />
+        )}
+      </div>
+    );
   };
 
   return (
@@ -823,7 +1102,7 @@ export default function ChatPearlDemoClient() {
                   className="border-white/10 bg-black/60 text-zinc-100 shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md"
                 >
                   {callState === "connecting" ? (
-                    <Loader2 className="size-3 animate-spin" />
+                    <Loader2 className={cn("size-3", prefersReducedMotion ? "opacity-90" : "animate-spin")} />
                   ) : (
                     <Waves className="size-3" />
                   )}
@@ -902,20 +1181,12 @@ export default function ChatPearlDemoClient() {
         >
           <div className="grid h-[76vh] grid-rows-[1fr_auto] gap-3 xl:h-[80vh]">
             <div className="relative overflow-hidden rounded-[1.4rem]">
-              <AnimatePresence>
-                {active && (
-                  <motion.div
-                    key="active-edge-light"
-                    className="pointer-events-none absolute inset-0 z-10 rounded-[1.4rem]"
-                    initial={prefersReducedMotion ? false : { opacity: 0 }}
-                    animate={prefersReducedMotion ? { opacity: 0.16 } : { opacity: [0.14, 0.28, 0.14] }}
-                    exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0 }}
-                    transition={{ duration: 2.1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                  >
-                    <div className="absolute inset-0 rounded-[1.4rem] border border-cyan-200/14 shadow-[inset_0_0_42px_rgba(34,211,238,0.08)]" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <StageAccent
+                mode={mode}
+                phase={phase}
+                reducedMotion={Boolean(prefersReducedMotion)}
+                energy={smoothedVolume}
+              />
 
               <motion.div
                 className="absolute inset-0"
@@ -923,33 +1194,24 @@ export default function ChatPearlDemoClient() {
                 animate={stageMotion.animate}
                 transition={stageMotion.transition}
               >
-                {mode === "circlewaveform" ? (
-                  <CircleWaveformMode
-                    active={active}
-                    phase={phase}
-                    volumeLevel={volumeLevel}
-                    smoothedVolume={smoothedVolume}
-                    reducedMotion={Boolean(prefersReducedMotion)}
-                    onToggleCall={toggleCall}
-                  />
-                ) : mode === "siri" ? (
-                  <SiriMode
-                    active={active}
-                    phase={phase}
-                    volumeLevel={volumeLevel}
-                    smoothedVolume={smoothedVolume}
-                    reducedMotion={Boolean(prefersReducedMotion)}
-                    onToggleCall={toggleCall}
-                  />
-                ) : (
-                  <GlobMode
-                    active={active}
-                    phase={phase}
-                    volumeLevel={volumeLevel}
-                    smoothedVolume={smoothedVolume}
-                    reducedMotion={Boolean(prefersReducedMotion)}
-                    onToggleCall={toggleCall}
-                  />
+                {renderModeScene(displayMode, "current")}
+                {incomingMode && incomingMode !== displayMode && (
+                  <motion.div
+                    className="absolute inset-0"
+                    initial={
+                      prefersReducedMotion
+                        ? { opacity: 0.92, scale: 1, y: 0 }
+                        : { opacity: 0.16, scale: 0.984, y: 8 }
+                    }
+                    animate={{
+                      opacity: prefersReducedMotion ? 1 : 0.96,
+                      scale: 1,
+                      y: 0,
+                    }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.22, ease: EASE_QUART_OUT }}
+                  >
+                    {renderModeScene(incomingMode, "incoming")}
+                  </motion.div>
                 )}
               </motion.div>
             </div>
