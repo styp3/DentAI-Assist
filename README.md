@@ -14,6 +14,7 @@
 - 📩 **Email Notifications** — Booking confirmations via Resend
 - 📊 **Admin Dashboard** — Manage doctors & appointments
 - 🗣️ **AI Voice Agent** — Powered by VAPI (Pro Plans only)
+- 💎 **Chat Pearl Demo on `/pro`** — Admin-only interactive voice showcase with 3 modern styles + live captions
 - 💳 **Subscription Plans** — Free, Basic ($9/mo), Pro ($19/mo) via Clerk Billing
 - 📂 **PostgreSQL** — Data persistence via Neon
 - 🎨 **Styling** — Tailwind CSS v4 + Shadcn UI
@@ -27,6 +28,10 @@
 - Demo runbook: [`docs/DEMO_RUNBOOK.md`](./docs/DEMO_RUNBOOK.md)
 - Agent implementation guide: [`AGENTS.md`](./AGENTS.md)
 - Security/key rotation: [`docs/SECURITY_KEYS.md`](./docs/SECURITY_KEYS.md)
+- Deferred tasks: [`docs/TODO.md`](./docs/TODO.md)
+- Voice demo implementation plan: [`docs/VOICE_DEMO_EXECUTION_PLAN.md`](./docs/VOICE_DEMO_EXECUTION_PLAN.md)
+- Chat Pearl task tracker: [`docs/CHAT_PEARL_TODO.md`](./docs/CHAT_PEARL_TODO.md)
+- Next-session handoff prompt: [`docs/NEXT_SESSION_PROMPT.md`](./docs/NEXT_SESSION_PROMPT.md)
 
 ---
 
@@ -71,6 +76,8 @@ NEXT_PUBLIC_VAPI_API_KEY=your_vapi_api_key
 
 # Admin
 ADMIN_EMAIL=your_admin_email
+# Optional Clerk role metadata gate:
+# publicMetadata.role = "admin"
 
 # Resend Email
 RESEND_API_KEY=your_resend_api_key
@@ -147,7 +154,7 @@ dentai-assist/
 │   │   ├── appointments/      # Booking system
 │   │   ├── dashboard/         # User dashboard
 │   │   ├── voice/             # AI voice agent
-│   │   ├── pro/               # Pricing & upgrade
+│   │   ├── pro/               # Pricing + Chat Pearl admin demo
 │   │   └── api/               # API routes
 │   ├── components/
 │   │   ├── admin/             # Admin components
@@ -156,6 +163,7 @@ dentai-assist/
 │   │   ├── emails/            # Email templates
 │   │   ├── landing/           # Landing page sections
 │   │   ├── voice/             # Voice agent components
+│   │   ├── voice-demo/        # Chat Pearl /pro demo components
 │   │   └── ui/                # Shadcn UI components
 │   ├── hooks/                 # TanStack Query hooks
 │   ├── lib/
@@ -180,7 +188,7 @@ dentai-assist/
 | `/dashboard` | User dashboard |
 | `/appointments` | Book appointments |
 | `/voice` | AI voice agent (Pro only) |
-| `/pro` | Pricing & upgrade |
+| `/pro` | Pricing + admin-only Chat Pearl demo |
 | `/admin` | Admin dashboard |
 
 ---

@@ -4,7 +4,7 @@
 Run a stable, interactive product demo for dentist clients with:
 - appointment booking,
 - admin dashboard,
-- voice agent preview,
+- Chat Pearl voice demo on `/pro`,
 - email confirmation behavior.
 
 ## Pre-Demo Checklist (5 minutes)
@@ -20,6 +20,7 @@ Run a stable, interactive product demo for dentist clients with:
    - `RESEND_API_KEY`
    - `DEMO_MODE` (recommended `true` for high-stakes demos)
 4. Confirm admin login email equals `ADMIN_EMAIL`.
+5. If using Clerk role metadata, confirm your user has `publicMetadata.role = "admin"`.
 
 ## Recommended Demo Script
 1. Landing page:
@@ -33,8 +34,12 @@ Run a stable, interactive product demo for dentist clients with:
 4. Admin view:
    - Switch to admin account.
    - Show doctors management and appointments visibility.
-5. Voice page:
-   - Show voice-agent UI and explain Pro plan gating.
+5. Chat Pearl demo (`/pro`):
+   - Show admin-only interactive voice panel.
+   - Switch between 3 styles using tabs.
+   - Start call and demonstrate live captions.
+   - Show mute/caption controls and session summary.
+   - Confirm pricing/payment section remains visible below.
 
 ## Expected Data for Demo
 - 3 active demo dentists:
@@ -49,13 +54,16 @@ Run a stable, interactive product demo for dentist clients with:
 - If error says recipient/domain restriction, this is Resend account policy, not app logic.
 
 ### Admin access fails
-- Ensure signed-in email exactly equals `ADMIN_EMAIL`.
+- Ensure either:
+  - `publicMetadata.role` is `"admin"`, or
+  - signed-in email exactly equals `ADMIN_EMAIL`.
 
 ### Voice widget fails
 - Recheck:
   - `NEXT_PUBLIC_VAPI_ASSISTANT_ID`
   - `NEXT_PUBLIC_VAPI_API_KEY`
-  - user plan entitlement from Clerk.
+  - microphone permissions in browser.
+  - network access to Vapi.
 
 ## Post-Demo Reset (Optional)
 - Run `npm run demo:reset -- --yes` to remove demo appointments and restore baseline doctor state.

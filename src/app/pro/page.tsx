@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import Navbar from "@/components/Navbar";
+import VoiceDemoShell from "@/components/voice-demo/VoiceDemoShell";
 import { PricingTable } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { CrownIcon } from "lucide-react";
@@ -11,11 +12,25 @@ async function ProPage() {
 
   if (!user) redirect("/");
 
+  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
+  const userEmail = user.emailAddresses[0]?.emailAddress?.toLowerCase();
+  const metadata = user.publicMetadata as { role?: unknown } | undefined;
+  const metadataRole =
+    typeof metadata?.role === "string" ? metadata.role.toLowerCase() : null;
+
+  const isAdmin = metadataRole === "admin" || (!!adminEmail && userEmail === adminEmail);
+
   return (
     <>
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-6 py-8 pt-24">
+        {isAdmin && (
+          <div className="mb-10 animate-in fade-in duration-500">
+            <VoiceDemoShell />
+          </div>
+        )}
+
         <div className="mb-12 overflow-hidden animate-in fade-in duration-500">
           <div className="flex items-center justify-between bg-linear-to-br from-primary/10 to-background rounded-3xl p-8 border border-primary/20">
             <div className="space-y-4">

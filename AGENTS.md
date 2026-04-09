@@ -43,7 +43,7 @@ Required env vars in `.env.local`:
 
 Notes:
 - `prisma.config.ts` explicitly loads `.env.local`.
-- Admin access is email-gated by `ADMIN_EMAIL`.
+- Admin access uses Clerk metadata role first (`publicMetadata.role === "admin"`), with `ADMIN_EMAIL` fallback.
 - Resend test mode may only allow specific recipient addresses.
 
 ## Core User Flows
@@ -56,6 +56,10 @@ Notes:
 4. Confirmation email via `POST /api/send-appointment-email`.
 5. Voice demo at `/voice` (gated by Clerk plan check).
 6. Admin panel at `/admin` for doctor and appointment management.
+7. Admin-only Chat Pearl demo at `/pro`:
+   - 3 manual-switch visual styles,
+   - live captions during calls,
+   - no local transcript persistence.
 
 ## Commands
 - Install: `npm install`
@@ -82,8 +86,13 @@ When diagnosing email issues:
 
 When diagnosing auth/admin issues:
 - Confirm Clerk sign-in works.
-- Confirm `ADMIN_EMAIL` exact match to signed-in user email.
+- Confirm either `publicMetadata.role === "admin"` or `ADMIN_EMAIL` exact match.
 - Confirm redirects and middleware behavior via browser (curl may not represent Clerk browser context).
+
+When working on voice demo features:
+- Keep frontend call runtime on `@vapi-ai/web` (already integrated in app).
+- Do not introduce transcript storage in local DB unless explicitly requested.
+- Keep `/pro` pricing/payment block intact while modifying demo UI.
 
 ## Known Demo Constraints
 - Curl-only auth checks can be misleading due to Clerk middleware/browser requirements.
