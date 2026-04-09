@@ -27,23 +27,23 @@ async function NextAppointment() {
   const isToday = isSameDay(appointmentDate, new Date());
 
   return (
-    <Card className="border-primary/20 bg-linear-to-br from-primary/5 to-background">
+    <Card className="border-cyan-300/20 bg-linear-to-br from-cyan-300/10 to-black/48 shadow-[0_14px_40px_rgba(0,0,0,0.4)] backdrop-blur-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CalendarIcon className="size-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-zinc-100">
+          <CalendarIcon className="size-5 text-cyan-300" />
           Next Appointment
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Status Badge */}
         <div className="flex items-center justify-between">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-primary">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/12 px-3 py-1">
+            <div className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+            <span className="text-sm font-medium text-cyan-100">
               {isToday ? "Today" : "Upcoming"}
             </span>
           </div>
-          <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded">
+          <span className="rounded bg-black/35 px-2 py-1 text-xs text-zinc-300">
             {nextAppointment.status}
           </span>
         </div>
@@ -51,45 +51,45 @@ async function NextAppointment() {
         {/* Appointment Details */}
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-              <UserIcon className="size-4 text-primary" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-300/14">
+              <UserIcon className="size-4 text-cyan-200" />
             </div>
             <div>
-              <p className="font-medium text-sm">
+              <p className="text-sm font-medium text-zinc-100">
                 {nextAppointment.doctor?.name}
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-zinc-400">
                 {nextAppointment.reason}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-              <CalendarIcon className="size-4 text-primary" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-300/14">
+              <CalendarIcon className="size-4 text-cyan-200" />
             </div>
             <div>
-              <p className="font-medium text-sm">{formattedDate}</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm font-medium text-zinc-100">{formattedDate}</p>
+              <p className="text-xs text-zinc-400">
                 {isToday ? "Today" : format(appointmentDate, "EEEE")}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-              <ClockIcon className="size-4 text-primary" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-300/14">
+              <ClockIcon className="size-4 text-cyan-200" />
             </div>
             <div>
-              <p className="font-medium text-sm">{nextAppointment.time}</p>
-              <p className="text-xs text-muted-foreground">Local time</p>
+              <p className="text-sm font-medium text-zinc-100">{nextAppointment.time}</p>
+              <p className="text-xs text-zinc-400">Local time</p>
             </div>
           </div>
         </div>
 
         {/* More Appointments Count */}
         {upcomingAppointments.length > 1 && (
-          <p className="text-xs text-center text-muted-foreground">
+          <p className="text-center text-xs text-zinc-400">
             +{upcomingAppointments.length - 1} more upcoming appointment
             {upcomingAppointments.length > 2 ? "s" : ""}
           </p>

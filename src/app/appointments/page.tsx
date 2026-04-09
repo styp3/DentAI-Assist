@@ -7,6 +7,7 @@ import DoctorSelectionStep from "@/components/appointments/DoctorSelectionStep";
 import ProgressSteps from "@/components/appointments/ProgressSteps";
 import TimeSelectionStep from "@/components/appointments/TimeSelectionStep";
 import Navbar from "@/components/Navbar";
+import { PremiumPageShell, PremiumViewport } from "@/components/premium/surface";
 import {
   useBookAppointment,
   useUserAppointments,
@@ -107,13 +108,13 @@ function AppointmentsPage() {
   };
 
   return (
-    <>
+    <PremiumPageShell>
       <Navbar />
-      <div className="max-w-7xl mx-auto px-6 py-8 pt-24">
+      <PremiumViewport className="max-w-7xl px-6 py-8 pt-24">
         {/* header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Book an Appointment</h1>
-          <p className="text-muted-foreground">
+          <p className="text-zinc-400">
             Find and book with verified dentists in your area
           </p>
         </div>
@@ -154,7 +155,7 @@ function AppointmentsPage() {
             onConfirm={handleBookAppointment}
           />
         )}
-      </div>
+      
 
       {bookedAppointment && (
         <AppointmentConfirmationModal
@@ -174,7 +175,7 @@ function AppointmentsPage() {
 
       {/* SHOW EXISTING APPOINTMENTS FOR THE CURRENT USER */}
       {userAppointments.length > 0 && (
-        <div className="mb-8 max-w-7xl mx-auto px-6 py-8">
+        <div className="mb-8 py-2">
           <h2 className="text-xl font-semibold mb-4">
             Your Upcoming Appointments
           </h2>
@@ -182,7 +183,7 @@ function AppointmentsPage() {
             {userAppointments.map((appointment) => (
               <div
                 key={appointment.id}
-                className="bg-card border rounded-lg p-4 shadow-sm">
+                className="rounded-lg border border-white/12 bg-black/42 p-4 shadow-[0_10px_28px_rgba(0,0,0,0.35)] backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="size-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <Image
@@ -213,7 +214,8 @@ function AppointmentsPage() {
           </div>
         </div>
       )}
-    </>
+      </PremiumViewport>
+    </PremiumPageShell>
   );
 }
 

@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 function Header() {
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 px-6 py-2 border-b border-border/50 bg-background/80 backdrop-blur-md h-16">
+    <nav className="fixed top-0 right-0 left-0 z-50 h-16 border-b border-cyan-300/14 bg-black/56 px-6 py-2 backdrop-blur-xl">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -15,23 +15,23 @@ function Header() {
             height={32}
             className="w-11"
           />
-          <span className="font-semibold text-lg">DentAI Assist</span>
+          <span className="text-lg font-semibold text-zinc-100">DentAI Assist</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
           <a
             href="#how-it-works"
-            className="text-muted-foreground hover:text-foreground">
+            className="text-zinc-400 transition-colors hover:text-cyan-100">
             How it Works
           </a>
           <a
             href="#pricing"
-            className="text-muted-foreground hover:text-foreground">
+            className="text-zinc-400 transition-colors hover:text-cyan-100">
             Pricing
           </a>
           <a
             href="#about"
-            className="text-muted-foreground hover:text-foreground">
+            className="text-zinc-400 transition-colors hover:text-cyan-100">
             About
           </a>
         </div>

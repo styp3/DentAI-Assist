@@ -18,7 +18,7 @@ async function Home() {
   if (user) redirect("/dashboard");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen premium-bg text-zinc-100">
       <Header />
       <Hero />
       <HowItWorks />

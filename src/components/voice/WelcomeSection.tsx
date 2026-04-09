@@ -2,17 +2,17 @@ import { MicIcon } from "lucide-react";
 
 function WelcomeSection() {
   return (
-    <div className="z-10 flex items-center justify-between bg-linear-to-br from-primary/10 via-primary/5 to-background rounded-3xl p-8 border border-primary/20 mb-12 overflow-hidden">
+    <div className="z-10 mb-12 flex items-center justify-between overflow-hidden rounded-3xl border border-cyan-300/20 bg-[linear-gradient(145deg,rgba(34,211,238,0.16),rgba(2,6,23,0.92)_40%,rgba(6,10,18,0.95))] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-lg">
       <div className="space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-          <span className="text-sm font-medium text-primary">
+        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1">
+          <div className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+          <span className="text-sm font-medium text-cyan-100">
             Voice Assistant Ready
           </span>
         </div>
         <div>
-          <h1 className="text-4xl font-bold mb-2">AI Voice Assistant</h1>
-          <p className="text-muted-foreground">
+          <h1 className="mb-2 text-4xl font-bold tracking-tight text-zinc-50">AI Voice Assistant</h1>
+          <p className="text-zinc-300">
             Talk to your AI dental assistant using natural voice commands. Get
             instant advice and professional guidance.
           </p>
@@ -20,8 +20,8 @@ function WelcomeSection() {
       </div>
 
       <div className="hidden lg:block">
-        <div className="w-32 h-32 bg-linear-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center">
-          <MicIcon className="w-16 h-16 text-primary" />
+        <div className="flex h-32 w-32 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 shadow-[0_0_46px_rgba(34,211,238,0.22)]">
+          <MicIcon className="h-16 w-16 text-cyan-200" />
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full px-6 py-2 border-b border-border/50 bg-background/80 backdrop-blur-md h-16 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 w-full border-b border-cyan-300/15 bg-black/58 px-6 py-2 shadow-[0_10px_34px_rgba(0,0,0,0.35)] backdrop-blur-xl">
       <div className="max-w-7xl mx-auto flex justify-between items-center h-full">
         {/* LOGO */}
         <div className="flex items-center gap-8">
@@ -30,8 +30,8 @@ function Navbar() {
               href="/dashboard"
               className={`flex items-center gap-2 transition-colors ${
                 pathname.startsWith("/dashboard")
-                  ? "text-foreground hover:text-primary font-medium"
-                  : "text-muted-foreground hover:text-primary"
+                  ? "font-medium text-cyan-100 hover:text-cyan-100"
+                  : "text-zinc-400 hover:text-cyan-100"
               }`}>
               <HomeIcon className="w-4 h-4" />
               <span className="hidden md:inline">Dashboard</span>
@@ -41,8 +41,8 @@ function Navbar() {
               href="/appointments"
               className={`flex items-center gap-2 transition-colors hover:text-primary ${
                 pathname.startsWith("/appointments")
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                  ? "text-cyan-100"
+                  : "text-zinc-400 hover:text-cyan-100"
               }`}>
               <CalendarIcon className="w-4 h-4" />
               <span className="hidden md:inline">Appointments</span>
@@ -52,8 +52,8 @@ function Navbar() {
               href="/voice"
               className={`flex items-center gap-2 transition-colors hover:text-primary ${
                 pathname.startsWith("/voice")
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                  ? "text-cyan-100"
+                  : "text-zinc-400 hover:text-cyan-100"
               }`}>
               <MicIcon className="w-4 h-4" />
               <span className="hidden md:inline">Voice</span>
@@ -62,8 +62,8 @@ function Navbar() {
               href="/pro"
               className={`flex items-center gap-2 transition-colors hover:text-primary ${
                 pathname.startsWith("/pro")
-                  ? "text-foreground"
-                  : "text-muted-foreground"
+                  ? "text-cyan-100"
+                  : "text-zinc-400 hover:text-cyan-100"
               }`}>
               <CrownIcon className="w-4 h-4" />
               <span className="hidden md:inline">Pro</span>
@@ -78,7 +78,7 @@ function Navbar() {
               <span className="text-sm font-medium text-foreground">
                 {user?.firstName} {user?.lastName}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-zinc-400">
                 {user?.emailAddresses?.[0]?.emailAddress}
               </span>
             </div>

@@ -3,9 +3,15 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactSiriwave, { type IReactSiriwaveProps } from "react-siriwave";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  PremiumPageShell,
+  PremiumPanel,
+  PremiumStageContainer,
+  PremiumStatusPill,
+  PremiumTranscriptDock,
+  PremiumViewport,
+} from "@/components/premium/surface";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { CaptionLine } from "@/components/voice-demo/types";
 import { useVoiceDemoSession } from "@/hooks/use-voice-demo-session";
@@ -434,10 +440,10 @@ export default function ChatPearlDemoClient() {
   };
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_14%_-14%,rgba(34,211,238,0.12),transparent_34%),radial-gradient(circle_at_86%_112%,rgba(217,70,239,0.11),transparent_36%),#040507] text-white">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1700px] flex-col gap-4 px-4 pb-6 pt-6 md:px-8 md:pb-8">
-        <Card className="border border-cyan-400/10 bg-black/45 py-3 shadow-[0_22px_60px_rgba(0,0,0,0.55)] backdrop-blur-sm">
-          <CardContent className="flex flex-col gap-3 px-4 xl:flex-row xl:items-center xl:justify-between">
+    <PremiumPageShell>
+      <PremiumViewport>
+        <PremiumPanel className="py-3">
+          <div className="flex flex-col gap-3 px-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="flex items-center gap-3">
               <div className="inline-flex size-10 items-center justify-center rounded-xl border border-cyan-300/30 bg-cyan-400/10">
                 <Sparkles className="size-4 text-cyan-300" />
@@ -464,17 +470,22 @@ export default function ChatPearlDemoClient() {
               </Tabs>
 
               <div className="flex items-center gap-2 xl:justify-end">
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "border-white/20 bg-white/5 text-zinc-200",
-                    active && "border-emerald-300/40 text-emerald-200",
-                    callState === "connecting" && "border-cyan-300/50 text-cyan-100"
-                  )}
+                <PremiumStatusPill
+                  tone={
+                    callState === "connecting"
+                      ? "connecting"
+                      : callState === "active"
+                        ? "active"
+                        : callState === "ended"
+                          ? "ended"
+                          : callState === "error"
+                            ? "error"
+                            : "idle"
+                  }
                 >
                   {callState === "connecting" ? <Loader2 className="size-3 animate-spin" /> : <Waves className="size-3" />}
                   {statusText}
-                </Badge>
+                </PremiumStatusPill>
 
                 <Button
                   variant="outline"
@@ -495,11 +506,11 @@ export default function ChatPearlDemoClient() {
                 </Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </PremiumPanel>
 
-        <Card className="relative flex-1 border border-cyan-400/12 bg-black/50 p-2 shadow-[0_28px_80px_rgba(0,0,0,0.6)] backdrop-blur-sm">
-          <CardContent className="grid h-[76vh] grid-rows-[1fr_auto] gap-3 p-0 xl:h-[80vh]">
+        <PremiumStageContainer className="premium-stage-glow">
+          <div className="grid h-[76vh] grid-rows-[1fr_auto] gap-3 p-0 xl:h-[80vh]">
             <div className="relative overflow-hidden rounded-xl">
               <AnimatePresence>
                 {active && (
@@ -549,46 +560,50 @@ export default function ChatPearlDemoClient() {
                   animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                   exit={prefersReducedMotion ? {} : { opacity: 0, y: 10 }}
                   transition={{ duration: 0.22, ease: EASE_QUART_OUT }}
-                  className="min-h-[170px] rounded-xl border border-cyan-300/18 bg-black/72 p-3 shadow-[0_18px_40px_rgba(0,0,0,0.55)] backdrop-blur-md"
                 >
-                  <div className="mb-2 flex items-center justify-between">
-                    <p className="text-sm font-medium text-cyan-200">Live transcript</p>
-                    <p className="text-[11px] text-zinc-400">assistant + user</p>
-                  </div>
-
-                  <div ref={transcriptViewportRef} className="h-[130px] overflow-y-auto pr-2 sm:h-[160px]">
-                    <div className="space-y-2 text-sm">
-                      {captionRows.length === 0 && (
-                        <p className="rounded-lg border border-white/10 bg-white/6 px-3 py-2 text-zinc-300">
-                          Start a call and the conversation with Pearl will appear here.
-                        </p>
-                      )}
-
-                      {captionRows.map((line) => (
-                        <div
-                          key={line.id}
-                          className={cn(
-                            "rounded-lg border px-3 py-2 transition-colors",
-                            line.role === "assistant" && "border-cyan-300/35 bg-cyan-400/12 text-cyan-50",
-                            line.role === "user" && "border-violet-300/35 bg-violet-400/12 text-violet-50",
-                            line.role === "system" && "border-amber-300/30 bg-amber-500/10 text-amber-50"
-                          )}
-                        >
-                          <div className="mb-1 flex items-center justify-between gap-2">
-                            <span className="text-[10px] uppercase tracking-wide opacity-80">{captionRoleLabel(line)}</span>
-                            <span className="text-[10px] opacity-60">{formatCaptionTime(line.timestamp)}</span>
-                          </div>
-                          <p className="leading-relaxed break-words">{line.content}</p>
-                        </div>
-                      ))}
+                  <PremiumTranscriptDock className="min-h-[170px]">
+                    <div className="mb-2 flex items-center justify-between">
+                      <p className="text-sm font-medium text-cyan-200">Live transcript</p>
+                      <p className="text-[11px] text-zinc-400">assistant + user</p>
                     </div>
-                  </div>
+
+                    <div ref={transcriptViewportRef} className="h-[130px] overflow-y-auto pr-2 sm:h-[160px]">
+                      <div className="space-y-2 text-sm">
+                        {captionRows.length === 0 && (
+                          <p className="rounded-lg border border-white/10 bg-white/6 px-3 py-2 text-zinc-300">
+                            Start a call and the conversation with Pearl will appear here.
+                          </p>
+                        )}
+
+                        {captionRows.map((line) => (
+                          <div
+                            key={line.id}
+                            className={cn(
+                              "rounded-lg border px-3 py-2 transition-colors",
+                              line.role === "assistant" &&
+                                "border-[color:var(--caption-assistant-border)] bg-[color:var(--caption-assistant-bg)] text-cyan-50",
+                              line.role === "user" &&
+                                "border-[color:var(--caption-user-border)] bg-[color:var(--caption-user-bg)] text-violet-50",
+                              line.role === "system" &&
+                                "border-[color:var(--caption-system-border)] bg-[color:var(--caption-system-bg)] text-amber-50"
+                            )}
+                          >
+                            <div className="mb-1 flex items-center justify-between gap-2">
+                              <span className="text-[10px] uppercase tracking-wide opacity-80">{captionRoleLabel(line)}</span>
+                              <span className="text-[10px] opacity-60">{formatCaptionTime(line.timestamp)}</span>
+                            </div>
+                            <p className="leading-relaxed break-words">{line.content}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </PremiumTranscriptDock>
                 </motion.div>
               )}
             </AnimatePresence>
-          </CardContent>
-        </Card>
-      </div>
-    </main>
+          </div>
+        </PremiumStageContainer>
+      </PremiumViewport>
+    </PremiumPageShell>
   );
 }

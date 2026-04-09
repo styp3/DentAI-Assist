@@ -61,6 +61,20 @@
   --shadow-2xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.13);
   --tracking-normal: 0rem;
   --spacing: 0.25rem;
+  --premium-bg-base: #040507;
+  --premium-bg-spot-a: rgba(34, 211, 238, 0.12);
+  --premium-bg-spot-b: rgba(217, 70, 239, 0.11);
+  --premium-foreground: #eef3ff;
+  --premium-surface: rgba(10, 12, 18, 0.56);
+  --premium-surface-strong: rgba(8, 10, 16, 0.72);
+  --premium-border: rgba(255, 255, 255, 0.12);
+  --premium-glow: rgba(34, 211, 238, 0.2);
+  --caption-assistant-bg: rgba(56, 189, 248, 0.14);
+  --caption-assistant-border: rgba(56, 189, 248, 0.35);
+  --caption-user-bg: rgba(168, 85, 247, 0.14);
+  --caption-user-border: rgba(168, 85, 247, 0.35);
+  --caption-system-bg: rgba(245, 158, 11, 0.12);
+  --caption-system-border: rgba(245, 158, 11, 0.32);
 }
 
 .dark {
@@ -119,6 +133,20 @@
   --shadow-xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.05),
     0px 8px 10px -1px hsl(0 0% 0% / 0.05);
   --shadow-2xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.13);
+  --premium-bg-base: #040507;
+  --premium-bg-spot-a: rgba(34, 211, 238, 0.12);
+  --premium-bg-spot-b: rgba(217, 70, 239, 0.11);
+  --premium-foreground: #eef3ff;
+  --premium-surface: rgba(10, 12, 18, 0.56);
+  --premium-surface-strong: rgba(8, 10, 16, 0.72);
+  --premium-border: rgba(255, 255, 255, 0.12);
+  --premium-glow: rgba(34, 211, 238, 0.2);
+  --caption-assistant-bg: rgba(56, 189, 248, 0.14);
+  --caption-assistant-border: rgba(56, 189, 248, 0.35);
+  --caption-user-bg: rgba(168, 85, 247, 0.14);
+  --caption-user-border: rgba(168, 85, 247, 0.35);
+  --caption-system-bg: rgba(245, 158, 11, 0.12);
+  --caption-system-border: rgba(245, 158, 11, 0.32);
 }
 
 @theme inline {
@@ -291,4 +319,22 @@ body {
   .voice-warm-dot-live {
     animation: none !important;
   }
+}
+
+.premium-bg {
+  background:
+    radial-gradient(circle at 14% -14%, var(--premium-bg-spot-a), transparent 34%),
+    radial-gradient(circle at 86% 112%, var(--premium-bg-spot-b), transparent 36%),
+    var(--premium-bg-base);
+}
+
+.premium-stage-glow::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid color-mix(in oklab, var(--premium-glow) 88%, transparent);
+  box-shadow: inset 0 0 60px color-mix(in oklab, var(--premium-glow) 60%, transparent);
+  opacity: 0.6;
 }

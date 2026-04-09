@@ -28,21 +28,21 @@ function DoctorSelectionStep({
   if (isLoading)
     return (
       <div className="space-y-6">
-        <h2 className="text-2xl font-semibold">Choose Your Dentist</h2>
+        <h2 className="text-2xl font-semibold text-zinc-100">Choose Your Dentist</h2>
         <DoctorCardsLoading />
       </div>
     );
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-semibold">Choose Your Dentist</h2>
+      <h2 className="text-2xl font-semibold text-zinc-100">Choose Your Dentist</h2>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {dentists.map((dentist) => (
           <Card
             key={dentist.id}
-            className={`cursor-pointer transition-all hover:shadow-lg ${
-              selectedDentistId === dentist.id ? "ring-2 ring-primary" : ""
+            className={`cursor-pointer border border-cyan-300/16 bg-black/45 transition-all hover:-translate-y-0.5 hover:border-cyan-300/28 hover:shadow-[0_18px_40px_rgba(0,0,0,0.42)] ${
+              selectedDentistId === dentist.id ? "ring-2 ring-cyan-400/75" : ""
             }`}
             onClick={() => onSelectDentist(dentist.id)}>
             <CardHeader className="pb-4">
@@ -55,8 +55,8 @@ function DoctorSelectionStep({
                   className="w-16 h-16 rounded-full object-cover"
                 />
                 <div className="flex-1">
-                  <CardTitle className="text-lg">{dentist.name}</CardTitle>
-                  <CardDescription className="text-primary font-medium">
+                  <CardTitle className="text-lg text-zinc-100">{dentist.name}</CardTitle>
+                  <CardDescription className="font-medium text-cyan-300">
                     {dentist.speciality || "General Dentistry"}
                   </CardDescription>
                   <div className="flex items-center gap-2 mt-2">
@@ -81,11 +81,13 @@ function DoctorSelectionStep({
                 <PhoneIcon className="w-4 h-4" />
                 <span>{dentist.phone}</span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-zinc-300">
                 {dentist.bio ||
                   "Experienced dental professional providing quality care."}
               </p>
-              <Badge variant="secondary">Licensed Professional</Badge>
+              <Badge className="border-cyan-300/28 bg-cyan-300/12 text-cyan-100 hover:bg-cyan-300/18" variant="outline">
+                Licensed Professional
+              </Badge>
             </CardContent>
           </Card>
         ))}

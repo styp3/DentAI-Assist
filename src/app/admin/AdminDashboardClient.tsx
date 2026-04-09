@@ -4,6 +4,7 @@ import AdminStats from "@/components/admin/AdminStats";
 import DoctorsManagement from "@/components/admin/DoctorsManagement";
 import RecentAppointments from "@/components/admin/RecentAppointments";
 import Navbar from "@/components/Navbar";
+import { PremiumPageShell, PremiumViewport } from "@/components/premium/surface";
 import { useGetAppointments } from "@/hooks/use-appointment";
 import { useGetDoctors } from "@/hooks/use-doctors";
 import { useUser } from "@clerk/nextjs";
@@ -29,24 +30,24 @@ function AdminDashboardClient() {
   if (doctorsLoading || appointmentsLoading) return <LoadingUI />;
 
   return (
-    <div className="min-h-screen bg-background">
+    <PremiumPageShell>
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-6 py-8 pt-24 animate-in fade-in duration-500">
+      <PremiumViewport className="max-w-7xl px-6 py-8 pt-24 animate-in fade-in duration-500">
         {/* ADMIN WELCOME SECTION */}
-        <div className="mb-12 flex items-center justify-between bg-linear-to-br from-primary/10 via-primary/5 to-background rounded-3xl p-8 border border-primary/20">
+        <div className="mb-12 flex items-center justify-between rounded-3xl border border-cyan-300/20 bg-[linear-gradient(145deg,rgba(34,211,238,0.16),rgba(2,6,23,0.92)_40%,rgba(6,10,18,0.95))] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-lg">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-primary">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1">
+              <div className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
+              <span className="text-sm font-medium text-cyan-100">
                 Admin Dashboard
               </span>
             </div>
             <div>
-              <h1 className="text-4xl font-bold mb-2">
+              <h1 className="mb-2 text-4xl font-bold text-zinc-100">
                 Welcome back, {user?.firstName || "Admin"}!
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-zinc-300">
                 Manage doctors, oversee appointments, and monitor your dental
                 practice performance.
               </p>
@@ -54,8 +55,8 @@ function AdminDashboardClient() {
           </div>
 
           <div className="hidden lg:block">
-            <div className="w-32 h-32 bg-linear-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center">
-              <SettingsIcon className="w-16 h-16 text-primary" />
+            <div className="flex h-32 w-32 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 shadow-[0_0_46px_rgba(34,211,238,0.22)]">
+              <SettingsIcon className="h-16 w-16 text-cyan-200" />
             </div>
           </div>
         </div>
@@ -70,8 +71,8 @@ function AdminDashboardClient() {
         <DoctorsManagement />
 
         <RecentAppointments />
-      </div>
-    </div>
+      </PremiumViewport>
+    </PremiumPageShell>
   );
 }
 
@@ -79,16 +80,16 @@ export default AdminDashboardClient;
 
 function LoadingUI() {
   return (
-    <div className="min-h-screen bg-background">
+    <PremiumPageShell>
       <Navbar />
-      <div className="max-w-7xl mx-auto px-6 py-8 pt-24">
+      <PremiumViewport className="max-w-7xl px-6 py-8 pt-24">
         <div className="flex items-center justify-center h-96">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading your dashboard...</p>
+            <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-cyan-300/65 border-t-transparent" />
+            <p className="text-zinc-300">Loading your dashboard...</p>
           </div>
         </div>
-      </div>
-    </div>
+      </PremiumViewport>
+    </PremiumPageShell>
   );
 }
