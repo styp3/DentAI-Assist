@@ -6,7 +6,9 @@ Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client w
 ## Locked Decisions
 - Access:
   - Signed-in users can access `/pro`.
-  - Demo widget itself is **admin-only**.
+  - Demo widget is visible to:
+    - admins always,
+    - selected tester emails when tester access toggle is enabled by admin.
   - Admin check priority:
     1. `user.publicMetadata.role === "admin"`
     2. Fallback exact match to `ADMIN_EMAIL`
@@ -20,6 +22,8 @@ Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client w
   - Live captions shown in UI
   - No local transcript persistence
   - Vapi-side transcript storage remains source of truth
+- Fallback mode:
+  - Provide text chat fallback when mic permission is denied.
 
 ## Integration Strategy
 - Runtime voice layer:
@@ -33,13 +37,23 @@ Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client w
 ## Implemented Architecture
 - Route integration:
   - `src/app/pro/page.tsx`
-  - Adds admin-only Chat Pearl section above pricing
+  - Adds Chat Pearl section above pricing for eligible users.
+  - Adds admin access panel to manage tester toggle + allowlist.
+- Access config persistence:
+  - `AppSetting` table in Prisma (`app_settings`)
+  - Settings keys:
+    - `chatPearlTesterAccessEnabled`
+    - `chatPearlTesterAllowlist`
+  - Admin API:
+    - `GET/POST /api/chat-pearl-access`
 - New modular component system:
   - `src/components/voice-demo/VoiceDemoShell.tsx`
+  - `src/components/voice-demo/VoiceDemoAdminAccessPanel.tsx`
   - `src/components/voice-demo/VoiceDemoVariantSelector.tsx`
   - `src/components/voice-demo/VoiceDemoStatus.tsx`
   - `src/components/voice-demo/VoiceDemoControls.tsx`
   - `src/components/voice-demo/VoiceDemoCaptions.tsx`
+  - `src/components/voice-demo/VoiceDemoFallbackChat.tsx`
   - `src/components/voice-demo/VoiceDemoSessionSummary.tsx`
   - `src/components/voice-demo/variants/*`
 - Session hook:
@@ -55,16 +69,15 @@ Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client w
 
 ## Acceptance Checklist
 - Admin sees Chat Pearl on `/pro`
-- Non-admin signed-in users do not see Chat Pearl widget
+- Selected tester emails can access Chat Pearl when admin enables toggle
+- Non-selected non-admin users do not see Chat Pearl
 - Pricing/payment section remains visible on `/pro`
 - Start/end call works
 - Mute toggle works
 - Live captions update during calls
+- Text fallback chat appears for mic-permission denial and manual fallback toggle
 - No transcript DB writes introduced
 - `npm run build` passes
 
 ## Follow-up Backlog
-- Optional fallback text mode when mic permissions are denied
-- Optional admin control to grant demo access to selected testers
 - Optional server-side orchestration endpoints with `@vapi-ai/server-sdk`
-

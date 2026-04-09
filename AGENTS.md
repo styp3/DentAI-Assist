@@ -25,6 +25,11 @@ Key directories:
 - `src/components/*` UI by domain (landing, appointments, admin, voice)
 - `prisma/schema.prisma` core data model
 
+Chat Pearl access config persistence:
+- `AppSetting` model (`app_settings` table) stores:
+  - `chatPearlTesterAccessEnabled`
+  - `chatPearlTesterAllowlist`
+
 ## Critical Runtime Contract
 Required env vars in `.env.local`:
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
@@ -93,6 +98,7 @@ When working on voice demo features:
 - Keep frontend call runtime on `@vapi-ai/web` (already integrated in app).
 - Do not introduce transcript storage in local DB unless explicitly requested.
 - Keep `/pro` pricing/payment block intact while modifying demo UI.
+- Preserve admin access controls API (`/api/chat-pearl-access`) and email allowlist behavior.
 
 ## Known Demo Constraints
 - Curl-only auth checks can be misleading due to Clerk middleware/browser requirements.

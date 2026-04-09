@@ -1,10 +1,17 @@
 export const dynamic = "force-dynamic";
 
 import Navbar from "@/components/Navbar";
-import VoiceDemoShell from "@/components/voice-demo/VoiceDemoShell";
-import { PricingTable } from "@clerk/nextjs";
+import PricingTableSafe from "@/components/pro/PricingTableSafe";
+import VoiceDemoAdminAccessPanel from "@/components/voice-demo/VoiceDemoAdminAccessPanel";
 import { currentUser } from "@clerk/nextjs/server";
-import { CrownIcon } from "lucide-react";
+import {
+  canAccessChatPearlByEmail,
+  getUserEmails,
+  getChatPearlAccessConfig,
+  isAdminUser,
+} from "@/lib/chat-pearl-access";
+import { ArrowUpRight, CrownIcon, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 async function ProPage() {
@@ -12,13 +19,14 @@ async function ProPage() {
 
   if (!user) redirect("/");
 
-  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase();
-  const userEmail = user.emailAddresses[0]?.emailAddress?.toLowerCase();
-  const metadata = user.publicMetadata as { role?: unknown } | undefined;
-  const metadataRole =
-    typeof metadata?.role === "string" ? metadata.role.toLowerCase() : null;
-
-  const isAdmin = metadataRole === "admin" || (!!adminEmail && userEmail === adminEmail);
+  const isAdmin = isAdminUser(user, process.env.ADMIN_EMAIL);
+  const accessConfig = await getChatPearlAccessConfig();
+  const userEmails = getUserEmails(user);
+  const canAccessDemo = canAccessChatPearlByEmail({
+    userEmails,
+    isAdmin,
+    config: accessConfig,
+  });
 
   return (
     <>
@@ -26,10 +34,37 @@ async function ProPage() {
 
       <div className="max-w-7xl mx-auto px-6 py-8 pt-24">
         {isAdmin && (
-          <div className="mb-10 animate-in fade-in duration-500">
-            <VoiceDemoShell />
-          </div>
+          <VoiceDemoAdminAccessPanel
+            initialTesterAccessEnabled={accessConfig.testerAccessEnabled}
+            initialTesterEmails={accessConfig.testerEmails}
+          />
         )}
+
+        <div className="mb-8 rounded-2xl border border-primary/30 bg-linear-to-br from-primary/10 via-card to-card p-5">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-primary">Voice Demo Lab</p>
+              <h2 className="mt-1 text-2xl font-bold">Chat Pearl</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Dedicated full-page demo with VapiBlocks-inspired modes: CircleWaveform, Siri, and Glob.
+              </p>
+            </div>
+            {canAccessDemo ? (
+              <Link
+                href="/chat-pearl"
+                className="inline-flex items-center gap-2 rounded-xl border border-primary/40 bg-primary px-4 py-2 text-primary-foreground transition hover:opacity-90"
+              >
+                <Sparkles className="size-4" />
+                Open Chat Pearl
+                <ArrowUpRight className="size-4" />
+              </Link>
+            ) : (
+              <div className="rounded-xl border border-border bg-card px-3 py-2 text-sm text-muted-foreground">
+                Chat Pearl access is not enabled for this account yet.
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="mb-12 overflow-hidden animate-in fade-in duration-500">
           <div className="flex items-center justify-between bg-linear-to-br from-primary/10 to-background rounded-3xl p-8 border border-primary/20">
@@ -70,7 +105,7 @@ async function ProPage() {
             </p>
           </div>
 
-          <PricingTable />
+          <PricingTableSafe />
         </div>
       </div>
     </>

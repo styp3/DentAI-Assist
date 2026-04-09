@@ -21,6 +21,8 @@ Run a stable, interactive product demo for dentist clients with:
    - `DEMO_MODE` (recommended `true` for high-stakes demos)
 4. Confirm admin login email equals `ADMIN_EMAIL`.
 5. If using Clerk role metadata, confirm your user has `publicMetadata.role = "admin"`.
+6. Ensure DB schema is current:
+   - `npx prisma db push`
 
 ## Recommended Demo Script
 1. Landing page:
@@ -36,9 +38,11 @@ Run a stable, interactive product demo for dentist clients with:
    - Show doctors management and appointments visibility.
 5. Chat Pearl demo (`/pro`):
    - Show admin-only interactive voice panel.
+   - In admin access panel, enable tester access and add selected tester emails if needed.
    - Switch between 3 styles using tabs.
    - Start call and demonstrate live captions.
    - Show mute/caption controls and session summary.
+   - If mic permission is blocked, use the text fallback mode.
    - Confirm pricing/payment section remains visible below.
 
 ## Expected Data for Demo
@@ -64,6 +68,10 @@ Run a stable, interactive product demo for dentist clients with:
   - `NEXT_PUBLIC_VAPI_API_KEY`
   - microphone permissions in browser.
   - network access to Vapi.
+
+### Tester access panel fails to save
+- Run `npx prisma db push` to ensure `app_settings` table exists.
+- Confirm the signed-in user is admin (metadata role or `ADMIN_EMAIL`).
 
 ## Post-Demo Reset (Optional)
 - Run `npm run demo:reset -- --yes` to remove demo appointments and restore baseline doctor state.

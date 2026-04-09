@@ -22,11 +22,10 @@ Use this checklist during implementation/maintenance of the `/pro` voice demo.
 
 ## Validation
 - [ ] Run local manual smoke test on `/pro` as admin and non-admin users.
+- [ ] Validate tester access toggle + allowlist behavior.
+- [ ] Validate mic-denied scenario triggers fallback text chat.
 - [ ] Validate on mobile viewport and desktop viewport.
-- [ ] Run `npm run build`.
+- [x] Run `npm run build`.
 
 ## Future Enhancements (Backlog)
-- [ ] Add fallback text chat mode when microphone permission is denied.
-- [ ] Add optional admin toggle to expose demo to selected beta testers.
 - [ ] Add server-side admin tooling with `@vapi-ai/server-sdk` (assistant/call orchestration only).
-

@@ -15,6 +15,8 @@
 - 📊 **Admin Dashboard** — Manage doctors & appointments
 - 🗣️ **AI Voice Agent** — Powered by VAPI (Pro Plans only)
 - 💎 **Chat Pearl Demo on `/pro`** — Admin-only interactive voice showcase with 3 modern styles + live captions
+- 🧰 **Tester Access Controls** — Admin toggle + allowlist for selected non-admin Chat Pearl testers
+- 💬 **Mic Fallback Mode** — Text-based fallback chat when browser mic permission is blocked
 - 💳 **Subscription Plans** — Free, Basic ($9/mo), Pro ($19/mo) via Clerk Billing
 - 📂 **PostgreSQL** — Data persistence via Neon
 - 🎨 **Styling** — Tailwind CSS v4 + Shadcn UI
@@ -118,6 +120,8 @@ npm install
 npx prisma generate
 npx prisma db push
 ```
+
+`db push` is required for Chat Pearl access settings storage (`app_settings` table).
 
 ### 4. Run the development server
 

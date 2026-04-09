@@ -10,7 +10,10 @@ Read:
 
 Current state:
 1. Chat Pearl demo is implemented on `/pro`.
-2. Demo visibility is admin-only via Clerk metadata role (`publicMetadata.role === "admin"`) with `ADMIN_EMAIL` fallback.
+2. Demo visibility:
+   - admins always,
+   - selected tester emails when admin enables tester access.
+3. Admin access panel on `/pro` can update tester toggle + allowlist.
 3. Pricing/payment section remains visible on `/pro`.
 4. Live captions are in-memory only (no local persistence).
 5. Three manual tabbed variants exist:
@@ -27,6 +30,7 @@ Execution instructions:
 3. Use `@vapi-ai/server-sdk` only for explicit server orchestration tasks.
 4. Validate with:
    - `npm run build`
+   - `npx prisma db push` (ensure app_settings table exists)
 5. Update:
    - `docs/DEMO_RUNBOOK.md`
    - `docs/CHAT_PEARL_TODO.md`

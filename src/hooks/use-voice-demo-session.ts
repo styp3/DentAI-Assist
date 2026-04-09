@@ -28,6 +28,21 @@ function toErrorMessage(error: unknown): string {
   return "Unable to start a call. Please check your microphone permissions.";
 }
 
+function isMicPermissionError(error: unknown) {
+  if (error && typeof error === "object" && "name" in error) {
+    const name = (error as { name?: unknown }).name;
+    if (name === "NotAllowedError" || name === "PermissionDeniedError") {
+      return true;
+    }
+  }
+  const message = toErrorMessage(error).toLowerCase();
+  return (
+    message.includes("permission") ||
+    message.includes("notallowederror") ||
+    message.includes("not allowed")
+  );
+}
+
 export function useVoiceDemoSession() {
   const [callState, setCallState] = useState<CallState>("idle");
   const [isAssistantSpeaking, setIsAssistantSpeaking] = useState(false);
@@ -36,6 +51,7 @@ export function useVoiceDemoSession() {
   const [captions, setCaptions] = useState<CaptionLine[]>([]);
   const [interimCaption, setInterimCaption] = useState<CaptionLine | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [micPermissionDenied, setMicPermissionDenied] = useState(false);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [endedAt, setEndedAt] = useState<number | null>(null);
 
@@ -46,6 +62,7 @@ export function useVoiceDemoSession() {
       setErrorMessage(null);
       setStartedAt(Date.now());
       setEndedAt(null);
+      setMicPermissionDenied(false);
     };
 
     const handleCallEnd = () => {
@@ -92,6 +109,7 @@ export function useVoiceDemoSession() {
       setIsAssistantSpeaking(false);
       setErrorMessage(toErrorMessage(error));
       setVolumeLevel(0);
+      setMicPermissionDenied(isMicPermissionError(error));
     };
 
     vapi
@@ -128,12 +146,14 @@ export function useVoiceDemoSession() {
     setErrorMessage(null);
     setCallState("connecting");
     setEndedAt(null);
+    setMicPermissionDenied(false);
 
     try {
       await vapi.start(assistantId);
     } catch (error) {
       setCallState("error");
       setErrorMessage(toErrorMessage(error));
+      setMicPermissionDenied(isMicPermissionError(error));
     }
   }, []);
 
@@ -156,6 +176,7 @@ export function useVoiceDemoSession() {
     setEndedAt(null);
     setVolumeLevel(0);
     setIsAssistantSpeaking(false);
+    setMicPermissionDenied(false);
   }, []);
 
   const sessionDurationMs = useMemo(() => {
@@ -173,6 +194,7 @@ export function useVoiceDemoSession() {
     captions,
     interimCaption,
     errorMessage,
+    micPermissionDenied,
     startedAt,
     endedAt,
     sessionDurationMs,
@@ -182,4 +204,3 @@ export function useVoiceDemoSession() {
     resetSession,
   };
 }
-

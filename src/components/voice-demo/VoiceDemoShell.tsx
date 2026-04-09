@@ -1,9 +1,11 @@
 "use client";
 
 import { BadgeCheck, ShieldCheck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { useVoiceDemoSession } from "@/hooks/use-voice-demo-session";
+import VoiceDemoFallbackChat from "./VoiceDemoFallbackChat";
 import VoiceDemoCaptions from "./VoiceDemoCaptions";
 import VoiceDemoControls from "./VoiceDemoControls";
 import VoiceDemoSessionSummary from "./VoiceDemoSessionSummary";
@@ -33,12 +35,20 @@ export default function VoiceDemoShell() {
     captions,
     interimCaption,
     errorMessage,
+    micPermissionDenied,
     sessionDurationMs,
     startCall,
     endCall,
     toggleMute,
     resetSession,
   } = useVoiceDemoSession();
+  const [showFallbackChat, setShowFallbackChat] = useState(false);
+
+  useEffect(() => {
+    if (micPermissionDenied) {
+      setShowFallbackChat(true);
+    }
+  }, [micPermissionDenied]);
 
   const visual = useMemo(() => {
     if (variant === "medical-clean") {
@@ -116,11 +126,24 @@ export default function VoiceDemoShell() {
         {formatConnectionHint(callState, errorMessage)}
       </p>
 
+      <div className="flex justify-end">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowFallbackChat((prev) => !prev)}
+        >
+          {showFallbackChat ? "Hide text fallback" : "Use text fallback"}
+        </Button>
+      </div>
+
       <VoiceDemoCaptions
         showCaptions={showCaptions}
         captions={captions}
         interimCaption={interimCaption}
       />
+
+      <VoiceDemoFallbackChat enabled={showFallbackChat} />
 
       <VoiceDemoSessionSummary
         show={callState === "ended" || callState === "error"}
@@ -130,4 +153,3 @@ export default function VoiceDemoShell() {
     </section>
   );
 }
-
