@@ -814,61 +814,23 @@ export default function ChatPearlDemoClient() {
     >
       <PremiumViewport className="gap-4 px-4 pb-6 pt-5 sm:px-6 md:px-8 md:pb-8">
         <PremiumPanel className="border-white/8 bg-[rgba(5,8,14,0.75)] py-3 shadow-[0_18px_36px_rgba(0,0,0,0.44)]">
-          <div className="grid gap-4 px-4 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-center">
-            <div className="flex items-center gap-3">
-              <div className="inline-flex size-10 items-center justify-center rounded-xl border border-cyan-200/16 bg-cyan-300/8 shadow-[0_0_18px_rgba(34,211,238,0.08)]">
-                <Sparkles className="size-4 text-cyan-200" />
+          <div className="flex flex-col gap-3 px-4">
+            <div className="flex flex-col gap-3 2xl:flex-row 2xl:items-start 2xl:justify-between">
+              <div className="flex items-center gap-3">
+                <div className="inline-flex size-10 items-center justify-center rounded-xl border border-cyan-200/16 bg-cyan-300/8 shadow-[0_0_18px_rgba(34,211,238,0.08)]">
+                  <Sparkles className="size-4 text-cyan-200" />
+                </div>
+                <div className="min-w-0">
+                  <h1 className="text-xl font-semibold tracking-tight text-zinc-50 md:text-[2.5rem]">
+                    Chat Pearl Demo
+                  </h1>
+                  <p className="max-w-[42rem] text-xs text-zinc-400 md:text-sm">
+                    Premium interactive voice showcase for dentist client demos.
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0">
-                <h1 className="text-xl font-semibold tracking-tight text-zinc-50 md:text-[2.5rem]">
-                  Chat Pearl Demo
-                </h1>
-                <p className="max-w-[42rem] text-xs text-zinc-400 md:text-sm">
-                  Premium interactive voice showcase for dentist client demos.
-                </p>
-              </div>
-            </div>
 
-            <div className="flex w-full min-w-0 flex-col gap-2 xl:items-end">
-              <Tabs value={mode} onValueChange={(value) => setMode(value as DemoMode)}>
-                <TabsList
-                  className={cn(
-                    "grid h-auto w-full max-w-full grid-cols-1 gap-2 rounded-[1.4rem] border border-white/8 bg-black/55 p-2 shadow-[0_10px_28px_rgba(0,0,0,0.32)] backdrop-blur-sm",
-                    "sm:grid-cols-3 xl:max-w-[52rem]"
-                  )}
-                  variant="line"
-                >
-                  {MODES.map((item) => (
-                    <TabsTrigger
-                      key={item.value}
-                      value={item.value}
-                      className={cn(
-                        "h-auto min-w-0 rounded-[1rem] border border-white/8 bg-white/[0.02] px-3 py-3 text-left",
-                        "transition-[transform,background-color,border-color,box-shadow,color] duration-200",
-                        "hover:border-white/12 hover:bg-white/[0.05] hover:text-white",
-                        "focus-visible:border-cyan-200 focus-visible:ring-3 focus-visible:ring-cyan-200/50",
-                        "data-active:border-white/12 data-active:bg-white/[0.06] data-active:text-white",
-                        "data-active:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_12px_24px_rgba(0,0,0,0.25)]"
-                      )}
-                      aria-label={`Switch to ${item.label}`}
-                    >
-                      <span className="flex w-full min-w-0 flex-col items-start">
-                        <span className="text-sm font-semibold">{item.label}</span>
-                        <span className="mt-1 line-clamp-2 text-xs text-zinc-400">
-                          {item.description}
-                        </span>
-                        {mode === item.value && (
-                          <span className="mt-2 text-[11px] font-medium text-cyan-100">
-                            Active style
-                          </span>
-                        )}
-                      </span>
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
-
-              <div className="flex flex-wrap items-center gap-2 xl:justify-end">
+              <div className="flex flex-wrap items-center gap-2 2xl:justify-end">
                 <PremiumStatusPill
                   tone={
                     callState === "connecting"
@@ -919,6 +881,38 @@ export default function ChatPearlDemoClient() {
                   {isMuted ? "Unmute" : "Mute"}
                 </Button>
               </div>
+            </div>
+
+            <div className="flex w-full min-w-0 flex-col gap-2">
+              <Tabs value={mode} onValueChange={(value) => setMode(value as DemoMode)}>
+                <TabsList
+                  className={cn(
+                    "grid h-auto w-full max-w-full grid-cols-1 gap-2 rounded-[1.4rem] border border-white/8 bg-black/55 p-2 shadow-[0_10px_28px_rgba(0,0,0,0.32)] backdrop-blur-sm",
+                    "sm:grid-cols-3"
+                  )}
+                  variant="line"
+                >
+                  {MODES.map((item) => (
+                    <TabsTrigger
+                      key={item.value}
+                      value={item.value}
+                      className={cn(
+                        "h-auto min-w-0 rounded-[1rem] border border-white/8 bg-white/[0.02] px-3 py-2.5 text-center",
+                        "transition-[transform,background-color,border-color,box-shadow,color] duration-200",
+                        "hover:border-white/12 hover:bg-white/[0.05] hover:text-white",
+                        "focus-visible:border-cyan-200 focus-visible:ring-3 focus-visible:ring-cyan-200/50",
+                        "data-active:border-white/12 data-active:bg-white/[0.06] data-active:text-white",
+                        "data-active:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_12px_24px_rgba(0,0,0,0.25)]"
+                      )}
+                      aria-label={`Switch to ${item.label}`}
+                    >
+                      <span className="flex w-full min-w-0 flex-col items-center">
+                        <span className="text-sm font-semibold">{item.label}</span>
+                      </span>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
             </div>
           </div>
         </PremiumPanel>
