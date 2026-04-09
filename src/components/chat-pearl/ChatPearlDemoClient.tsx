@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import ReactSiriwave, { type IReactSiriwaveProps } from "react-siriwave";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Loader2, Mic, MicOff, PhoneOff, Sparkles, Waves } from "lucide-react";
 
 type DemoMode = "circlewaveform" | "siri" | "glob";
+type StageCallState = "idle" | "connecting" | "active" | "ended" | "error";
 
 const MODES: Array<{ value: DemoMode; label: string }> = [
   { value: "circlewaveform", label: "CircleWaveform" },
@@ -98,10 +100,12 @@ function ModeIntro({ mode }: { mode: DemoMode }) {
 
 function CircleWaveformMode({
   active,
+  callState,
   volumeLevel,
   onToggleCall,
 }: {
   active: boolean;
+  callState: StageCallState;
   volumeLevel: number;
   onToggleCall: () => void;
 }) {
@@ -157,30 +161,68 @@ function CircleWaveformMode({
       >
         {active ? <PhoneOff className="size-9" /> : <Mic className="size-9" />}
       </motion.button>
+
+      <AnimatePresence>
+        {callState === "connecting" && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
+          >
+            <div className="relative flex flex-col items-center gap-3 rounded-2xl border border-cyan-300/35 bg-slate-950/65 px-5 py-4 backdrop-blur-md">
+              <motion.div
+                className="absolute inset-0 rounded-2xl border border-cyan-300/40"
+                animate={{ opacity: [0.2, 0.6, 0.2], scale: [0.97, 1.03, 0.97] }}
+                transition={{ duration: 1.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              />
+              <div className="relative flex items-center gap-2 text-cyan-100">
+                <Loader2 className="size-4 animate-spin" />
+                <span className="text-sm font-medium">Calling Pearl…</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
 function SiriMode({
   active,
+  callState,
   volumeLevel,
   onToggleCall,
 }: {
   active: boolean;
+  callState: StageCallState;
   volumeLevel: number;
   onToggleCall: () => void;
 }) {
-  const bars = Array.from({ length: 64 }, (_, i) => {
-    const base = 18 + Math.sin(i / 3) * 8;
-    const dynamics = active ? 8 + Math.sin(i * 0.9 + volumeLevel * 15) * 14 + volumeLevel * 40 : 0;
-    return Math.max(6, base + dynamics);
-  });
+  const reactiveLevel = active ? Math.min(1, volumeLevel * 2.6 + 0.08) : 0;
+  const siriConfig = useMemo<IReactSiriwaveProps>(
+    () => ({
+      theme: "ios9",
+      ratio: 1,
+      speed: active ? 0.12 + reactiveLevel * 0.34 : 0.05,
+      amplitude: active ? 0.7 + reactiveLevel * 5.4 : 0.35,
+      frequency: active ? 2.8 + reactiveLevel * 6.5 : 2.2,
+      color: "#35D8FF",
+      cover: true,
+      width: 1240,
+      height: 220,
+      autostart: true,
+      pixelDepth: 0.7,
+      lerpSpeed: 0.08,
+    }),
+    [active, reactiveLevel]
+  );
 
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-sky-300/20 bg-[radial-gradient(circle_at_50%_40%,rgba(34,211,238,0.18),rgba(2,6,23,0.97)_62%)]">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(34,211,238,0.08),transparent_36%,rgba(37,99,235,0.08)_72%,transparent)]" />
 
-      <div className="relative z-10 flex w-[90%] max-w-[1200px] flex-col items-center gap-8 rounded-3xl border border-cyan-300/22 bg-black/35 px-6 py-10 backdrop-blur-sm">
+      <div className="relative z-10 flex w-[90%] max-w-[1260px] flex-col items-center gap-8 rounded-3xl border border-cyan-300/22 bg-black/35 px-6 py-10 backdrop-blur-sm">
         <motion.button
           type="button"
           onClick={onToggleCall}
@@ -191,37 +233,65 @@ function SiriMode({
           {active ? <PhoneOff className="size-6" /> : <Mic className="size-6" />}
         </motion.button>
 
-        <div className="relative w-full overflow-hidden rounded-2xl border border-sky-300/22 bg-slate-950/60 p-5">
+        <div className="relative w-full overflow-hidden rounded-2xl border border-sky-300/22 bg-slate-950/65 p-5">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.15),transparent_62%)]" />
-          <div className="relative flex h-[220px] items-center justify-center gap-1">
-            {bars.map((h, i) => (
-              <motion.div
-                key={`siri-${i}`}
-                className="w-1.5 rounded-full bg-gradient-to-t from-cyan-400/40 via-cyan-300/80 to-indigo-300/85"
-                animate={{
-                  height: active ? [22, h, Math.max(18, h * 0.75)] : 18,
-                  opacity: active ? [0.55, 1, 0.7] : 0.45,
-                }}
-                transition={{
-                  duration: 0.8 + (i % 6) * 0.08,
-                  repeat: active ? Number.POSITIVE_INFINITY : 0,
-                  ease: "linear",
-                }}
-              />
-            ))}
+          <div className="relative flex h-[220px] items-center justify-center">
+            <motion.div
+              className="pointer-events-none absolute inset-0"
+              animate={{
+                opacity: active ? [0.2, 0.34, 0.2] : 0.14,
+                scale: active ? [0.985, 1.015, 0.985] : 1,
+              }}
+              transition={{ duration: 1.35, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            >
+              <div className="h-full w-full bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.2),transparent_65%)]" />
+            </motion.div>
+
+            <div className="relative h-[170px] w-full max-w-[1020px] overflow-hidden rounded-2xl border border-cyan-300/18 bg-slate-950/75">
+              <ReactSiriwave {...siriConfig} />
+            </div>
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {callState === "connecting" && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex justify-center"
+          >
+            <div className="rounded-full border border-cyan-300/40 bg-slate-950/72 px-5 py-2.5 shadow-[0_0_30px_rgba(56,189,248,0.28)] backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <motion.div
+                  className="h-1.5 w-12 rounded-full bg-cyan-300/85"
+                  animate={{ scaleX: [0.45, 1, 0.45], opacity: [0.35, 1, 0.35] }}
+                  transition={{ duration: 0.95, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                />
+                <span className="text-sm font-medium text-cyan-100">Calling Pearl…</span>
+                <motion.div
+                  className="h-1.5 w-12 rounded-full bg-cyan-300/85"
+                  animate={{ scaleX: [1, 0.45, 1], opacity: [1, 0.35, 1] }}
+                  transition={{ duration: 0.95, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
 function GlobMode({
   active,
+  callState,
   volumeLevel,
   onToggleCall,
 }: {
   active: boolean;
+  callState: StageCallState;
   volumeLevel: number;
   onToggleCall: () => void;
 }) {
@@ -264,6 +334,32 @@ function GlobMode({
         {active ? <PhoneOff className="size-4" /> : <Mic className="size-4" />}
         {active ? "End call" : "Start call"}
       </motion.button>
+
+      <AnimatePresence>
+        {callState === "connecting" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
+          >
+            <div className="relative flex items-center gap-3 rounded-2xl border border-fuchsia-300/45 bg-slate-950/72 px-5 py-3 backdrop-blur-md">
+              <motion.div
+                className="size-5 rounded-full border border-fuchsia-200/75"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              >
+                <motion.div
+                  className="mx-auto mt-0.5 h-1.5 w-1.5 rounded-full bg-fuchsia-200"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY }}
+                />
+              </motion.div>
+              <span className="text-sm font-medium text-fuchsia-100">Calling Pearl…</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -431,11 +527,16 @@ export default function ChatPearlDemoClient() {
                 >
                   {!prefersReducedMotion && <ModeIntro mode={mode} />}
                   {mode === "circlewaveform" ? (
-                    <CircleWaveformMode active={active} volumeLevel={volumeLevel} onToggleCall={toggleCall} />
+                    <CircleWaveformMode
+                      active={active}
+                      callState={callState}
+                      volumeLevel={volumeLevel}
+                      onToggleCall={toggleCall}
+                    />
                   ) : mode === "siri" ? (
-                    <SiriMode active={active} volumeLevel={volumeLevel} onToggleCall={toggleCall} />
+                    <SiriMode active={active} callState={callState} volumeLevel={volumeLevel} onToggleCall={toggleCall} />
                   ) : (
-                    <GlobMode active={active} volumeLevel={volumeLevel} onToggleCall={toggleCall} />
+                    <GlobMode active={active} callState={callState} volumeLevel={volumeLevel} onToggleCall={toggleCall} />
                   )}
                 </motion.div>
               </AnimatePresence>
