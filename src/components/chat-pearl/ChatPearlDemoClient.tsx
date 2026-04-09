@@ -71,6 +71,68 @@ function getVisualPhase(callState: StageCallState): VisualPhase {
   return "idle";
 }
 
+function getStageMotion(mode: DemoMode, phase: VisualPhase, reducedMotion: boolean) {
+  if (reducedMotion) {
+    return {
+      animate: { scale: 1, rotate: 0, y: 0 },
+      transition: { duration: 0 },
+    };
+  }
+
+  if (mode === "circlewaveform") {
+    return {
+      animate: {
+        scale: phase === "connecting" ? [1, 1.012, 1] : phase === "active" ? [1, 1.008, 1] : 1,
+        rotate:
+          phase === "connecting"
+            ? [0, 0.25, -0.15, 0]
+            : phase === "idle"
+              ? [0, -0.12, 0.12, 0]
+              : 0,
+        y: phase === "connecting" ? [0, -1.2, 0] : [0, 0, 0],
+      },
+      transition: {
+        duration: phase === "connecting" ? 1.9 : phase === "active" ? 2.8 : 3.8,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: EASE_QUART_OUT,
+      },
+    };
+  }
+
+  if (mode === "siri") {
+    return {
+      animate: {
+        scale: phase === "connecting" ? [1, 1.01, 1] : phase === "active" ? [1, 1.006, 1] : 1,
+        rotate: phase === "connecting" ? [0, 0.16, -0.16, 0] : 0,
+        y: phase === "connecting" ? [0, -0.8, 0] : [0, 0, 0],
+      },
+      transition: {
+        duration: phase === "connecting" ? 1.6 : 2.6,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: EASE_QUART_OUT,
+      },
+    };
+  }
+
+  return {
+    animate: {
+      scale: phase === "connecting" ? [1, 1.015, 1] : phase === "active" ? [1, 1.01, 1] : 1,
+      rotate:
+        phase === "connecting"
+          ? [0, 0.7, -0.35, 0]
+          : phase === "idle"
+            ? [0, -0.25, 0.25, 0]
+            : 0,
+      y: phase === "idle" ? [0, -1.4, 0] : [0, -0.8, 0],
+    },
+    transition: {
+      duration: phase === "connecting" ? 2.4 : phase === "active" ? 3 : 4,
+      repeat: Number.POSITIVE_INFINITY,
+      ease: EASE_QUART_OUT,
+    },
+  };
+}
+
 function ModePrelude({
   mode,
   phase,
@@ -226,12 +288,26 @@ function CircleWaveformMode({
   });
 
   return (
-    <div
+    <motion.div
       className={cn(
         "relative flex h-full min-h-[24rem] w-full items-center justify-center overflow-hidden rounded-[1.8rem] border",
         "border-cyan-200/12 bg-[radial-gradient(circle_at_50%_40%,rgba(7,13,22,0.98),rgba(1,3,6,1)_64%)]",
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_24px_60px_rgba(0,0,0,0.58)]"
       )}
+      initial={false}
+      animate={
+        reducedMotion
+          ? { scale: 1, rotate: 0 }
+          : {
+              scale: phase === "connecting" ? [1, 1.008, 1] : phase === "active" ? [1, 1.006, 1] : 1,
+              rotate: phase === "connecting" ? [0, 0.16, -0.16, 0] : phase === "idle" ? [0, -0.08, 0.08, 0] : 0,
+            }
+      }
+      transition={{
+        duration: phase === "connecting" ? 1.8 : phase === "active" ? 2.6 : 3.8,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: EASE_QUART_OUT,
+      }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(34,211,238,0.04),transparent_38%,rgba(34,211,238,0.035)_72%,transparent)]" />
       <ModePrelude mode="circlewaveform" phase={phase} accent="#5eead4" reducedMotion={reducedMotion} />
@@ -369,32 +445,7 @@ function CircleWaveformMode({
               : "Ready to start"}
         </motion.div>
       </motion.div>
-
-      <AnimatePresence>
-        {phase === "connecting" && (
-          <motion.div
-            initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-            animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
-            className="pointer-events-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-4"
-          >
-            <div className="flex items-center gap-3 rounded-full border border-cyan-200/14 bg-black/62 px-4 py-2.5 shadow-[0_10px_28px_rgba(0,0,0,0.44)] backdrop-blur-md">
-              <motion.div
-                className="h-1.5 w-10 rounded-full bg-cyan-200/85"
-                animate={reducedMotion ? { opacity: 0.8 } : { scaleX: [0.55, 1, 0.55], opacity: [0.35, 0.95, 0.35] }}
-                transition={{ duration: 0.95, repeat: Number.POSITIVE_INFINITY, ease: EASE_QUART_OUT }}
-              />
-              <span className="text-xs font-medium text-cyan-50">Calling Pearl…</span>
-              <motion.div
-                className="h-1.5 w-10 rounded-full bg-cyan-200/85"
-                animate={reducedMotion ? { opacity: 0.8 } : { scaleX: [1, 0.55, 1], opacity: [0.95, 0.35, 0.95] }}
-                transition={{ duration: 0.95, repeat: Number.POSITIVE_INFINITY, ease: EASE_QUART_OUT }}
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
@@ -423,151 +474,106 @@ function SiriMode({
       frequency: active ? 2.5 + reactiveLevel * 3.8 : phase === "connecting" ? 3.1 : 2.0,
       color: "#67e8f9",
       cover: true,
-      width: 1240,
-      height: 220,
+      width: 2000,
+      height: 320,
       autostart: true,
-      pixelDepth: 0.55,
+      pixelDepth: 0.72,
       lerpSpeed: 0.06,
     }),
     [active, phase, reactiveLevel]
   );
 
   return (
-    <div
+    <motion.div
       className={cn(
-        "relative flex h-full min-h-[24rem] w-full items-center justify-center overflow-hidden rounded-[1.8rem] border",
+        "relative flex h-full min-h-[24rem] w-full flex-col overflow-hidden rounded-[1.8rem] border",
         "border-sky-200/12 bg-[radial-gradient(circle_at_50%_38%,rgba(12,22,34,0.96),rgba(1,3,8,1)_66%)]",
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_24px_60px_rgba(0,0,0,0.58)]"
       )}
+      initial={false}
+      animate={
+        reducedMotion
+          ? { scale: 1, rotate: 0 }
+          : {
+              scale: phase === "connecting" ? [1, 1.008, 1] : phase === "active" ? [1, 1.004, 1] : 1,
+              rotate: phase === "connecting" ? [0, 0.12, -0.12, 0] : 0,
+            }
+      }
+      transition={{
+        duration: phase === "connecting" ? 1.7 : 2.8,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: EASE_QUART_OUT,
+      }}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(34,211,238,0.035),transparent_36%,rgba(37,99,235,0.03)_72%,transparent)]" />
       <ModePrelude mode="siri" phase={phase} accent="#67e8f9" reducedMotion={reducedMotion} />
 
-      <div className="relative z-10 flex w-[min(92%,78rem)] flex-col items-center gap-6 rounded-[1.6rem] border border-white/8 bg-black/38 px-5 py-7 shadow-[0_18px_40px_rgba(0,0,0,0.38)] backdrop-blur-sm sm:px-6 sm:py-8">
-        <div className="flex w-full items-start justify-between gap-3">
-          <motion.button
-            type="button"
-            onClick={onToggleCall}
-            aria-label={active ? "End voice demo" : "Start voice demo"}
-            className={cn(
-              "inline-flex size-14 items-center justify-center rounded-2xl border",
-              "border-sky-200/18 bg-[rgba(8,15,24,0.82)] text-sky-50",
-              "shadow-[0_0_24px_rgba(56,189,248,0.1),inset_0_1px_0_rgba(255,255,255,0.04)]",
-              "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-              "hover:border-sky-100/35 hover:bg-[rgba(10,18,28,0.92)] hover:shadow-[0_0_28px_rgba(56,189,248,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
-              "focus-visible:border-sky-100 focus-visible:ring-3 focus-visible:ring-sky-200/55",
-              "active:scale-[0.97]"
-            )}
-            whileHover={reducedMotion ? undefined : { scale: 1.04 }}
-            whileTap={reducedMotion ? undefined : { scale: 0.965 }}
-          >
-            {active ? <PhoneOff className="size-6" /> : <Mic className="size-6" />}
-          </motion.button>
-
-          <div className="max-w-[28rem] text-right">
-            <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-sky-200/70">
-              Siri mode
-            </p>
-            <p className="mt-1 text-sm text-slate-300">
-              A clean, animated waveform frame with quieter ambient spill.
-            </p>
-          </div>
-        </div>
-
-        <div className="relative w-full overflow-hidden rounded-[1.4rem] border border-sky-200/10 bg-[rgba(3,7,12,0.76)] px-4 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:px-5 sm:py-6">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.08),transparent_60%)]" />
-          <div className="relative flex h-[clamp(180px,26vw,240px)] items-center justify-center">
-            <motion.div
-              className="pointer-events-none absolute inset-0"
-              initial={false}
-              animate={{
-                opacity: phase === "active" ? [0.16, 0.26, 0.16] : phase === "connecting" ? [0.22, 0.36, 0.22] : 0.12,
-                scale: phase === "active" ? [0.99, 1.01, 0.99] : [1, 1.005, 1],
-              }}
-              transition={{
-                duration: phase === "connecting" ? 0.95 : 1.4,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: EASE_QUART_OUT,
-              }}
-            >
-              <div className="h-full w-full bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.12),transparent_66%)]" />
-            </motion.div>
-
-            <div className="relative h-full w-full overflow-hidden rounded-[1.2rem] border border-sky-200/10 bg-[#02050b]/90">
-              <ReactSiriwave {...siriConfig} />
-            </div>
-          </div>
-        </div>
-
-        <motion.div
-          className="pointer-events-none rounded-full border px-4 py-2 text-xs font-medium tracking-wide"
-          style={{
-            borderColor: phase === "active" ? "rgba(125, 211, 252, 0.24)" : "rgba(255,255,255,0.08)",
-            backgroundColor:
-              phase === "active"
-                ? "rgba(3, 10, 16, 0.86)"
-                : "rgba(3, 8, 12, 0.8)",
-            color: "#e0f2fe",
-            boxShadow:
-              phase === "active"
-                ? "0 0 18px rgba(56, 189, 248, 0.1)"
-                : "0 0 12px rgba(56, 189, 248, 0.06)",
-          }}
-          animate={
-            reducedMotion
-              ? { opacity: 1 }
-              : {
-                  opacity: phase === "idle" ? 0.7 : 1,
-                  y: phase === "connecting" ? [0, -1, 0] : [0, 0.5, 0],
-                }
-          }
-          transition={{
-            duration: phase === "connecting" ? 1.0 : 2.2,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: EASE_EXPO_OUT,
-          }}
-        >
-          {phase === "connecting"
-            ? "Handshaking"
-            : active
-              ? "Live wave"
-              : "Ready to call"}
-        </motion.div>
-
-        <AnimatePresence>
-          {phase === "connecting" && (
-            <motion.div
-              initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-              animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-              exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
-              className="pointer-events-none absolute inset-x-0 bottom-5 z-20 flex justify-center px-4"
-            >
-              <div className="flex items-center gap-3 rounded-full border border-sky-200/12 bg-black/68 px-4 py-2.5 shadow-[0_10px_24px_rgba(0,0,0,0.42)] backdrop-blur-md">
-                <motion.div
-                  className="h-1.5 w-10 rounded-full bg-sky-200/85"
-                  animate={
-                    reducedMotion
-                      ? { opacity: 0.75 }
-                      : { scaleX: [0.55, 1, 0.55], opacity: [0.35, 0.95, 0.35] }
-                  }
-                  transition={{ duration: 0.95, repeat: Number.POSITIVE_INFINITY, ease: EASE_QUART_OUT }}
-                />
-                <span className="text-xs font-medium text-sky-50">Calling Pearl…</span>
-                <motion.div
-                  className="h-1.5 w-10 rounded-full bg-sky-200/85"
-                  animate={
-                    reducedMotion
-                      ? { opacity: 0.75 }
-                      : { scaleX: [1, 0.55, 1], opacity: [0.95, 0.35, 0.95] }
-                  }
-                  transition={{ duration: 0.95, repeat: Number.POSITIVE_INFINITY, ease: EASE_QUART_OUT }}
-                />
-              </div>
-            </motion.div>
+      <div className="relative z-10 flex items-start justify-between gap-3 px-4 pb-3 pt-4 sm:px-5">
+        <motion.button
+          type="button"
+          onClick={onToggleCall}
+          aria-label={active ? "End voice demo" : "Start voice demo"}
+          className={cn(
+            "inline-flex size-14 shrink-0 items-center justify-center rounded-2xl border",
+            "border-sky-200/18 bg-[rgba(8,15,24,0.82)] text-sky-50",
+            "shadow-[0_0_24px_rgba(56,189,248,0.1),inset_0_1px_0_rgba(255,255,255,0.04)]",
+            "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
+            "hover:border-sky-100/35 hover:bg-[rgba(10,18,28,0.92)] hover:shadow-[0_0_28px_rgba(56,189,248,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
+            "focus-visible:border-sky-100 focus-visible:ring-3 focus-visible:ring-sky-200/55",
+            "active:scale-[0.97]"
           )}
-        </AnimatePresence>
+          whileHover={reducedMotion ? undefined : { scale: 1.04 }}
+          whileTap={reducedMotion ? undefined : { scale: 0.965 }}
+        >
+          {active ? <PhoneOff className="size-6" /> : <Mic className="size-6" />}
+        </motion.button>
+
+        <div className="max-w-[28rem] text-right">
+          <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-sky-200/70">
+            Siri mode
+          </p>
+          <p className="mt-1 text-sm text-slate-300">
+            Full-width waveform with a lighter, cleaner stage.
+          </p>
+        </div>
       </div>
-    </div>
+
+      <div className="relative z-10 flex flex-1 min-h-0 px-3 pb-4 sm:px-5">
+        <div className="relative flex h-full min-h-[clamp(230px,32vw,340px)] w-full items-center overflow-hidden rounded-[1.6rem] bg-[rgba(3,7,12,0.72)]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.08),transparent_66%)]" />
+          <motion.div
+            className="pointer-events-none absolute inset-x-[6%] top-1/2 h-px -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(103,232,249,0.12) 18%, rgba(103,232,249,0.55) 50%, rgba(103,232,249,0.12) 82%, transparent 100%)",
+              boxShadow: "0 0 20px rgba(56,189,248,0.14)",
+            }}
+            animate={
+              reducedMotion
+                ? { opacity: 0.7 }
+                : {
+                    x:
+                      phase === "connecting"
+                        ? ["-6%", "6%", "-6%"]
+                        : phase === "active"
+                          ? ["-3%", "3%", "-3%"]
+                          : ["-2%", "2%", "-2%"],
+                    opacity: phase === "connecting" ? [0.35, 0.95, 0.35] : [0.22, 0.5, 0.22],
+                    scaleX: phase === "connecting" ? [0.92, 1, 0.92] : [0.96, 1, 0.96],
+                  }
+            }
+            transition={{
+              duration: phase === "connecting" ? 1.15 : 1.8,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: EASE_QUART_OUT,
+            }}
+          />
+          <div className="relative h-full w-full">
+            <ReactSiriwave {...siriConfig} />
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -707,31 +713,6 @@ function GlobMode({
         {active ? "End call" : "Start call"}
       </motion.button>
 
-      <AnimatePresence>
-        {phase === "connecting" && (
-          <motion.div
-            initial={reducedMotion ? false : { opacity: 0 }}
-            animate={reducedMotion ? { opacity: 1 } : { opacity: 1 }}
-            exit={reducedMotion ? { opacity: 0 } : { opacity: 0 }}
-            className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
-          >
-            <div className="relative flex items-center gap-3 rounded-2xl border border-fuchsia-200/18 bg-black/68 px-5 py-3 backdrop-blur-md">
-              <motion.div
-                className="size-5 rounded-full border border-fuchsia-100/70"
-                animate={reducedMotion ? { rotate: 0 } : { rotate: 360 }}
-                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-              >
-                <motion.div
-                  className="mx-auto mt-0.5 h-1.5 w-1.5 rounded-full bg-fuchsia-100"
-                  animate={reducedMotion ? { opacity: 0.95 } : { opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY, ease: EASE_QUART_OUT }}
-                />
-              </motion.div>
-              <span className="text-sm font-medium text-fuchsia-50">Calling Pearl…</span>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
@@ -787,14 +768,10 @@ export default function ChatPearlDemoClient() {
     node.scrollTop = node.scrollHeight;
   }, [captionRows.length, transcriptViewportRef]);
 
-  const motionPreset = useMemo(() => {
-    const distance = phase === "connecting" ? 10 : phase === "active" ? 14 : 12;
-    return {
-      initial: prefersReducedMotion ? false : { opacity: 0, y: distance, scale: 0.985 },
-      animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 },
-      exit: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -distance * 0.75, scale: 0.99 },
-    };
-  }, [phase, prefersReducedMotion]);
+  const stageMotion = useMemo(
+    () => getStageMotion(mode, phase, Boolean(prefersReducedMotion)),
+    [mode, phase, prefersReducedMotion]
+  );
 
   const toggleCall = () => {
     if (active || callState === "connecting") {
@@ -940,45 +917,41 @@ export default function ChatPearlDemoClient() {
                 )}
               </AnimatePresence>
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`${mode}-${phase}`}
-                  initial={motionPreset.initial}
-                  animate={motionPreset.animate}
-                  exit={motionPreset.exit}
-                  transition={{ duration: phase === "connecting" ? 0.34 : 0.3, ease: EASE_EXPO_OUT }}
-                  className="absolute inset-0"
-                >
-                  {mode === "circlewaveform" ? (
-                    <CircleWaveformMode
-                      active={active}
-                      phase={phase}
-                      volumeLevel={volumeLevel}
-                      smoothedVolume={smoothedVolume}
-                      reducedMotion={Boolean(prefersReducedMotion)}
-                      onToggleCall={toggleCall}
-                    />
-                  ) : mode === "siri" ? (
-                    <SiriMode
-                      active={active}
-                      phase={phase}
-                      volumeLevel={volumeLevel}
-                      smoothedVolume={smoothedVolume}
-                      reducedMotion={Boolean(prefersReducedMotion)}
-                      onToggleCall={toggleCall}
-                    />
-                  ) : (
-                    <GlobMode
-                      active={active}
-                      phase={phase}
-                      volumeLevel={volumeLevel}
-                      smoothedVolume={smoothedVolume}
-                      reducedMotion={Boolean(prefersReducedMotion)}
-                      onToggleCall={toggleCall}
-                    />
-                  )}
-                </motion.div>
-              </AnimatePresence>
+              <motion.div
+                className="absolute inset-0"
+                initial={false}
+                animate={stageMotion.animate}
+                transition={stageMotion.transition}
+              >
+                {mode === "circlewaveform" ? (
+                  <CircleWaveformMode
+                    active={active}
+                    phase={phase}
+                    volumeLevel={volumeLevel}
+                    smoothedVolume={smoothedVolume}
+                    reducedMotion={Boolean(prefersReducedMotion)}
+                    onToggleCall={toggleCall}
+                  />
+                ) : mode === "siri" ? (
+                  <SiriMode
+                    active={active}
+                    phase={phase}
+                    volumeLevel={volumeLevel}
+                    smoothedVolume={smoothedVolume}
+                    reducedMotion={Boolean(prefersReducedMotion)}
+                    onToggleCall={toggleCall}
+                  />
+                ) : (
+                  <GlobMode
+                    active={active}
+                    phase={phase}
+                    volumeLevel={volumeLevel}
+                    smoothedVolume={smoothedVolume}
+                    reducedMotion={Boolean(prefersReducedMotion)}
+                    onToggleCall={toggleCall}
+                  />
+                )}
+              </motion.div>
             </div>
 
             <AnimatePresence>
