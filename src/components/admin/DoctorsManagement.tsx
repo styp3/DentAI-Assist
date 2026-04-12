@@ -117,7 +117,7 @@ function DoctorsManagement() {
                     </div>
 
                     {doctor.isActive ? (
-                      <Badge className="bg-green-500/10 text-green-600 border border-green-200 hover:bg-green-100">
+                      <Badge className="border border-orange-300/20 bg-orange-300/10 text-orange-200 hover:bg-orange-300/15">
                         Active
                       </Badge>
                     ) : (

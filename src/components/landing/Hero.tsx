@@ -7,13 +7,13 @@ function Hero() {
   return (
     <section className="relative h-screen flex items-center overflow-hidden pt-20">
       {/* GRID BG  */}
-      <div className="absolute inset-0 bg-linear-to-br from-black/15 via-transparent to-cyan-400/8">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(56,189,248,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.1)_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-20"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-black/15 via-transparent to-orange-400/8">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(232,138,83,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(232,138,83,0.1)_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-20"></div>
       </div>
 
       {/* GRADIENT ORBS */}
-      <div className="absolute top-20 left-1/4 h-72 w-72 rounded-full bg-linear-to-r from-cyan-300/16 to-cyan-300/6 blur-3xl" />
-      <div className="absolute bottom-20 right-1/4 h-96 w-96 rounded-full bg-linear-to-r from-violet-300/10 to-cyan-300/6 blur-3xl" />
+      <div className="absolute top-20 left-1/4 h-72 w-72 rounded-full bg-linear-to-r from-orange-300/16 to-orange-300/6 blur-3xl" />
+      <div className="absolute bottom-20 right-1/4 h-96 w-96 rounded-full bg-linear-to-r from-stone-300/10 to-orange-300/6 blur-3xl" />
 
       <div className="relative z-10 w-full px-6">
         <div className="max-w-7xl mx-auto">
@@ -23,8 +23,8 @@ function Hero() {
               <div className="space-y-6">
                 {/* BADGE */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary/10 to-primary/5 rounded-full border border-primary/20 backdrop-blur-sm">
-                  <div className="h-2 w-2 animate-pulse rounded-full bg-cyan-300"></div>
-                  <span className="text-sm font-medium text-cyan-200">
+                  <div className="h-2 w-2 animate-pulse rounded-full bg-orange-300"></div>
+                  <span className="text-sm font-medium text-orange-200">
                     AI-Powered Dental Assistant
                   </span>
                 </div>
@@ -35,7 +35,7 @@ function Hero() {
                     Get instant answers
                   </span>
                   <br />
-                  <span className="bg-linear-to-r from-cyan-300 to-cyan-500/75 bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-orange-300 to-orange-500/75 bg-clip-text text-transparent">
                     to your dental questions
                   </span>
                 </h1>

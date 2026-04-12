@@ -58,9 +58,9 @@ function CTA() {
           <div className="relative flex justify-center lg:justify-end">
             <div className="relative">
               {/* Floating Badge */}
-              <div className="absolute -top-4 left-4 bg-linear-to-r from-green-500/90 to-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg z-10">
+              <div className="absolute -top-4 left-4 bg-linear-to-r from-orange-500/90 to-orange-400/90 backdrop-blur-sm text-slate-950 px-3 py-1 rounded-full text-xs font-medium shadow-lg z-10">
                 <div className="flex items-center gap-1">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                  <div className="w-1.5 h-1.5 bg-slate-950 rounded-full animate-pulse"></div>
                   Available 24/7
                 </div>
               </div>

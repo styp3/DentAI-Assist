@@ -17,10 +17,10 @@ async function DentalHealthOverview() {
   const user = await currentUser();
 
   return (
-    <Card className="lg:col-span-2 border-cyan-300/16 bg-black/45 shadow-[0_14px_40px_rgba(0,0,0,0.4)] backdrop-blur-sm">
+    <Card className="lg:col-span-2 border-orange-300/16 bg-black/45 shadow-[0_14px_40px_rgba(0,0,0,0.4)] backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-zinc-100">
-          <BrainIcon className="size-5 text-cyan-300" />
+          <BrainIcon className="size-5 text-orange-300" />
           Your Dental Health
         </CardTitle>
         <CardDescription className="text-zinc-400">
@@ -29,25 +29,25 @@ async function DentalHealthOverview() {
       </CardHeader>
       <CardContent>
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="rounded-xl border border-cyan-300/12 bg-cyan-400/6 p-4 text-center">
-            <div className="mb-1 text-2xl font-bold text-cyan-200">
+          <div className="rounded-xl border border-orange-300/12 bg-orange-400/6 p-4 text-center">
+            <div className="mb-1 text-2xl font-bold text-orange-200">
               {appointmentStats.completedAppointments}
             </div>
             <div className="text-sm text-zinc-400">
               Completed Visits
             </div>
           </div>
-          <div className="rounded-xl border border-cyan-300/12 bg-cyan-400/6 p-4 text-center">
-            <div className="mb-1 text-2xl font-bold text-cyan-200">
+          <div className="rounded-xl border border-orange-300/12 bg-orange-400/6 p-4 text-center">
+            <div className="mb-1 text-2xl font-bold text-orange-200">
               {appointmentStats.totalAppointments}
             </div>
             <div className="text-sm text-zinc-400">
               Total Appointments
             </div>
           </div>
-          <div className="rounded-xl border border-cyan-300/12 bg-cyan-400/6 p-4 text-center">
-            <div className="mb-1 text-2xl font-bold text-cyan-200">
-              <div className="mb-1 text-2xl font-bold text-cyan-200">
+          <div className="rounded-xl border border-orange-300/12 bg-orange-400/6 p-4 text-center">
+            <div className="mb-1 text-2xl font-bold text-orange-200">
+              <div className="mb-1 text-2xl font-bold text-orange-200">
                 {user?.createdAt
                   ? format(new Date(user.createdAt), "MMM yyyy")
                   : "N/A"}
@@ -57,13 +57,13 @@ async function DentalHealthOverview() {
           </div>
         </div>
 
-        <div className="mt-6 rounded-xl border border-cyan-300/20 bg-linear-to-r from-cyan-300/14 to-cyan-300/8 p-4">
+        <div className="mt-6 rounded-xl border border-orange-300/20 bg-linear-to-r from-orange-300/14 to-orange-300/8 p-4">
           <div className="flex items-start gap-3">
-            <div className="size-10 rounded-lg bg-cyan-300/20 flex items-center justify-center shrink-0">
-              <MessageSquareIcon className="size-5 text-cyan-200" />
+            <div className="size-10 rounded-lg bg-orange-300/20 flex items-center justify-center shrink-0">
+              <MessageSquareIcon className="size-5 text-orange-200" />
             </div>
             <div>
-              <h4 className="mb-1 font-semibold text-cyan-100">
+              <h4 className="mb-1 font-semibold text-orange-100">
                 Ready to get started?
               </h4>
               <p className="mb-3 text-sm text-zinc-300">
@@ -72,12 +72,12 @@ async function DentalHealthOverview() {
               </p>
               <div className="flex gap-2">
                 <Link href="/voice">
-                  <Button size="sm" className="border border-cyan-300/40 bg-cyan-400/80 text-slate-950 hover:bg-cyan-300/90">
+                  <Button size="sm" className="border border-orange-300/40 bg-orange-400/80 text-slate-950 hover:bg-orange-300/90">
                     Try AI Assistant
                   </Button>
                 </Link>
                 <Link href="/appointments">
-                  <Button size="sm" variant="outline" className="border-cyan-300/28 bg-black/30 text-zinc-100 hover:bg-cyan-300/10">
+                  <Button size="sm" variant="outline" className="border-orange-300/28 bg-black/30 text-zinc-100 hover:bg-orange-300/10">
                     Book Appointment
                   </Button>
                 </Link>

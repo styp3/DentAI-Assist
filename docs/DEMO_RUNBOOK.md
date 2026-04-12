@@ -7,6 +7,10 @@ Run a stable, interactive product demo for dentist clients with:
 - Chat Pearl voice demo on `/chat-pearl` (launched from `/pro`),
 - email confirmation behavior.
 
+## Current Live URL
+- `https://dentai-assist.vercel.app`
+- Last verified deployment: `dpl_FUhi5YvhxMo83v4HLyxdBZWwPSri`
+
 ## Pre-Demo Checklist (5 minutes)
 1. Start app:
    - `npm run dev`

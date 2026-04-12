@@ -38,6 +38,13 @@
 
 ---
 
+## 🌐 Live Demo
+
+- Production URL: [https://dentai-assist.vercel.app](https://dentai-assist.vercel.app)
+- Inspector (latest deploy): [Vercel deployment details](https://vercel.com/jayashiyan-gmailcoms-projects/dentai-assist/FUhi5YvhxMo83v4HLyxdBZWwPSri)
+
+---
+
 ## 🛠️ Tech Stack
 
 | Category | Technology |

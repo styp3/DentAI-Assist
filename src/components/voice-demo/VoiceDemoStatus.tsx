@@ -32,7 +32,7 @@ export default function VoiceDemoStatus({
         className={cn(
           "rounded-xl border px-3 py-2 text-sm",
           live
-            ? "border-emerald-300/70 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100"
+            ? "border-orange-300/70 bg-orange-50 text-orange-950 dark:bg-orange-950/26 dark:text-orange-100"
             : "border-border bg-card"
         )}>
         <div className="flex items-center gap-2">
@@ -62,4 +62,3 @@ export default function VoiceDemoStatus({
     </div>
   );
 }
-

@@ -85,9 +85,9 @@ export default function VoiceDemoCaptions({
               className={cn(
                 "rounded-xl border px-3 py-2",
                 line.role === "assistant"
-                  ? "border-cyan-200 bg-cyan-50/80 dark:border-cyan-900/50 dark:bg-cyan-950/20"
+                  ? "border-orange-200 bg-orange-50/80 dark:border-orange-900/50 dark:bg-orange-950/20"
                   : line.role === "user"
-                  ? "border-emerald-200 bg-emerald-50/80 dark:border-emerald-900/50 dark:bg-emerald-950/20"
+                  ? "border-stone-200 bg-stone-50/80 dark:border-stone-800/70 dark:bg-stone-950/22"
                   : "border-border bg-muted/40",
                 isInterim && "opacity-70"
               )}>
@@ -109,4 +109,3 @@ export default function VoiceDemoCaptions({
     </div>
   );
 }
-

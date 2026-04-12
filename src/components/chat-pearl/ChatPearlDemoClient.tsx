@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactSiriwave, { type IReactSiriwaveProps } from "react-siriwave";
-import { Sparkles, Loader2, Mic, MicOff, PhoneOff, Waves } from "lucide-react";
+import { Sparkles, Mic, MicOff, PhoneOff, Waves } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   PremiumPageShell,
@@ -42,7 +42,7 @@ const MODES: Array<{ value: DemoMode; label: string; description: string }> = [
   {
     value: "glob",
     label: "Glob",
-    description: "A rotating core with concentric lock-on rings.",
+    description: "A fluid orb core with organic internal motion.",
   },
 ];
 
@@ -53,30 +53,30 @@ const EASE_EXPO_IN_OUT: [number, number, number, number] = [0.87, 0, 0.13, 1];
 function getModeAccent(mode: DemoMode): ModeAccent {
   if (mode === "circlewaveform") {
     return {
-      border: "rgba(94, 234, 212, 0.18)",
-      glow: "rgba(34, 211, 238, 0.12)",
+      border: "rgba(232, 138, 83, 0.18)",
+      glow: "rgba(232, 138, 83, 0.12)",
       sweep:
-        "linear-gradient(115deg, rgba(34,211,238,0.08), transparent 34%, rgba(45,212,191,0.06) 70%, transparent)",
-      wash: "radial-gradient(circle at 50% 48%, rgba(45,212,191,0.12), transparent 68%)",
+        "linear-gradient(115deg, rgba(232,138,83,0.08), transparent 34%, rgba(120,113,108,0.06) 70%, transparent)",
+      wash: "radial-gradient(circle at 50% 48%, rgba(232,138,83,0.12), transparent 68%)",
     };
   }
 
   if (mode === "siri") {
     return {
-      border: "rgba(125, 211, 252, 0.18)",
-      glow: "rgba(56, 189, 248, 0.12)",
+      border: "rgba(232, 138, 83, 0.18)",
+      glow: "rgba(232, 138, 83, 0.12)",
       sweep:
-        "linear-gradient(90deg, transparent 0%, rgba(103,232,249,0.08) 22%, rgba(125,211,252,0.14) 50%, rgba(103,232,249,0.08) 78%, transparent 100%)",
-      wash: "radial-gradient(circle at 50% 50%, rgba(56,189,248,0.12), transparent 70%)",
+        "linear-gradient(90deg, transparent 0%, rgba(232,138,83,0.08) 22%, rgba(120,113,108,0.14) 50%, rgba(232,138,83,0.08) 78%, transparent 100%)",
+      wash: "radial-gradient(circle at 50% 50%, rgba(232,138,83,0.12), transparent 70%)",
     };
   }
 
   return {
-    border: "rgba(216, 180, 254, 0.18)",
-    glow: "rgba(192, 132, 252, 0.12)",
+    border: "rgba(232, 138, 83, 0.18)",
+    glow: "rgba(232, 138, 83, 0.12)",
     sweep:
-      "linear-gradient(125deg, rgba(217,70,239,0.08), transparent 32%, rgba(34,211,238,0.06) 72%, transparent)",
-    wash: "radial-gradient(circle at 50% 46%, rgba(192,132,252,0.14), transparent 66%)",
+      "linear-gradient(125deg, rgba(232,138,83,0.08), transparent 32%, rgba(120,113,108,0.06) 72%, transparent)",
+    wash: "radial-gradient(circle at 50% 46%, rgba(232,138,83,0.14), transparent 66%)",
   };
 }
 
@@ -355,6 +355,7 @@ function CircleWaveformMode({
   const baseEnergy =
     phase === "active" ? smoothedVolume : phase === "connecting" ? 0.16 : 0.06;
   const reactiveEnergy = Math.max(baseEnergy, volumeLevel * 0.45);
+  const roundCoord = (value: number) => Number(value.toFixed(3));
 
   const bars = Array.from({ length: 72 }, (_, i) => {
     const angle = (i / 72) * Math.PI * 2;
@@ -368,10 +369,10 @@ function CircleWaveformMode({
     const outer = inner + gain;
 
     return {
-      x1: 300 + Math.cos(angle) * inner,
-      y1: 300 + Math.sin(angle) * inner,
-      x2: 300 + Math.cos(angle) * outer,
-      y2: 300 + Math.sin(angle) * outer,
+      x1: roundCoord(300 + Math.cos(angle) * inner),
+      y1: roundCoord(300 + Math.sin(angle) * inner),
+      x2: roundCoord(300 + Math.cos(angle) * outer),
+      y2: roundCoord(300 + Math.sin(angle) * outer),
     };
   });
 
@@ -379,7 +380,7 @@ function CircleWaveformMode({
     <motion.div
       className={cn(
         "relative flex h-full min-h-[24rem] w-full items-center justify-center overflow-hidden rounded-[1.8rem] border",
-        "border-cyan-200/12 bg-[radial-gradient(circle_at_50%_40%,rgba(7,13,22,0.98),rgba(1,3,6,1)_64%)]",
+        "border-orange-200/12 bg-[radial-gradient(circle_at_50%_40%,rgba(17,12,8,0.98),rgba(1,1,1,1)_64%)]",
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.035),0_24px_60px_rgba(0,0,0,0.58)]"
       )}
       initial={false}
@@ -397,12 +398,12 @@ function CircleWaveformMode({
         ease: EASE_QUART_OUT,
       }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(34,211,238,0.04),transparent_38%,rgba(34,211,238,0.035)_72%,transparent)]" />
-      <ModePrelude mode="circlewaveform" phase={phase} accent="#5eead4" reducedMotion={reducedMotion} />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(232,138,83,0.04),transparent_38%,rgba(120,113,108,0.035)_72%,transparent)]" />
+      <ModePrelude mode="circlewaveform" phase={phase} accent="#e88a53" reducedMotion={reducedMotion} />
 
       <motion.svg
         viewBox="0 0 600 600"
-        className="absolute h-[clamp(320px,70vmin,620px)] w-[clamp(320px,70vmin,620px)] text-cyan-200/80"
+        className="absolute h-[clamp(320px,70vmin,620px)] w-[clamp(320px,70vmin,620px)] text-orange-200/80"
         animate={
           reducedMotion
             ? { scale: 1 }
@@ -472,12 +473,12 @@ function CircleWaveformMode({
           onClick={onToggleCall}
           aria-label={active ? "End voice demo" : "Start voice demo"}
           className={cn(
-            "relative inline-flex size-24 items-center justify-center rounded-3xl border text-cyan-100",
-            "border-cyan-300/30 bg-[rgba(8,15,22,0.76)]",
-            "shadow-[0_0_30px_rgba(34,211,238,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]",
+            "relative inline-flex size-24 items-center justify-center rounded-3xl border text-orange-100",
+            "border-orange-300/30 bg-[rgba(18,12,8,0.76)]",
+            "shadow-[0_0_30px_rgba(232,138,83,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]",
             "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-            "hover:border-cyan-200/50 hover:bg-[rgba(10,19,28,0.86)] hover:shadow-[0_0_34px_rgba(34,211,238,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]",
-            "focus-visible:border-cyan-100 focus-visible:ring-3 focus-visible:ring-cyan-200/55",
+            "hover:border-orange-200/50 hover:bg-[rgba(22,16,11,0.86)] hover:shadow-[0_0_34px_rgba(232,138,83,0.2),inset_0_1px_0_rgba(255,255,255,0.06)]",
+            "focus-visible:border-orange-100 focus-visible:ring-3 focus-visible:ring-orange-200/55",
             "active:scale-[0.97]"
           )}
           whileHover={reducedMotion ? undefined : { scale: 1.03 }}
@@ -489,16 +490,16 @@ function CircleWaveformMode({
                   scale: active ? pulse : phase === "connecting" ? 1.01 : 1,
                   boxShadow:
                     phase === "active"
-                      ? "0 0 36px rgba(34, 211, 238, 0.18), inset 0 1px 0 rgba(255,255,255,0.05)"
+                      ? "0 0 36px rgba(232, 138, 83, 0.18), inset 0 1px 0 rgba(255,255,255,0.05)"
                       : phase === "connecting"
-                        ? "0 0 28px rgba(34, 211, 238, 0.12), inset 0 1px 0 rgba(255,255,255,0.05)"
-                        : "0 0 24px rgba(34, 211, 238, 0.08), inset 0 1px 0 rgba(255,255,255,0.04)",
+                        ? "0 0 28px rgba(232, 138, 83, 0.12), inset 0 1px 0 rgba(255,255,255,0.05)"
+                        : "0 0 24px rgba(232, 138, 83, 0.08), inset 0 1px 0 rgba(255,255,255,0.04)",
                 }
           }
           transition={{ duration: 0.22, ease: EASE_QUART_OUT }}
         >
           <motion.span
-            className="pointer-events-none absolute -inset-4 rounded-[2rem] border border-cyan-200/16"
+            className="pointer-events-none absolute -inset-4 rounded-[2rem] border border-orange-200/16"
             animate={
               reducedMotion
                 ? { opacity: phase === "connecting" ? 0.45 : 0 }
@@ -520,7 +521,7 @@ function CircleWaveformMode({
             }}
           />
           <motion.span
-            className="pointer-events-none absolute -inset-7 rounded-[2.25rem] border border-cyan-100/10"
+            className="pointer-events-none absolute -inset-7 rounded-[2.25rem] border border-orange-100/10"
             animate={
               reducedMotion
                 ? { opacity: phase === "connecting" ? 0.28 : 0 }
@@ -539,7 +540,7 @@ function CircleWaveformMode({
           <span
             className={cn(
               "absolute inset-0 rounded-3xl border",
-              phase === "active" ? "border-cyan-200/22" : "border-white/6"
+              phase === "active" ? "border-orange-200/22" : "border-white/6"
             )}
           />
           {active ? <PhoneOff className="size-9" /> : <Mic className="size-9" />}
@@ -555,11 +556,11 @@ function CircleWaveformMode({
                 : phase === "connecting"
                   ? "rgba(3, 12, 16, 0.82)"
                   : "rgba(5, 8, 14, 0.76)",
-            color: phase === "active" ? "#bbf7d0" : "#d6f7ff",
+            color: phase === "active" ? "#f4efe9" : "#f4efe9",
             boxShadow:
               phase === "active"
-                ? "0 0 18px rgba(34, 197, 94, 0.12)"
-                : "0 0 14px rgba(34, 211, 238, 0.08)",
+                ? "0 0 18px rgba(232, 138, 83, 0.12)"
+                : "0 0 14px rgba(232, 138, 83, 0.08)",
           }}
           animate={
             reducedMotion
@@ -591,6 +592,7 @@ function SiriMode({
   phase,
   volumeLevel,
   smoothedVolume,
+  dominantSpeaker,
   reducedMotion,
   onToggleCall,
 }: {
@@ -598,33 +600,49 @@ function SiriMode({
   phase: VisualPhase;
   volumeLevel: number;
   smoothedVolume: number;
+  dominantSpeaker: "assistant" | "user" | "system" | "unknown";
   reducedMotion: boolean;
   onToggleCall: () => void;
 }) {
-  const reactiveLevel = Math.min(1, smoothedVolume * 2.2 + volumeLevel * 0.5 + (phase === "connecting" ? 0.08 : 0));
+  const speakerWeight =
+    dominantSpeaker === "assistant" ? 1.18 : dominantSpeaker === "user" ? 0.72 : 1;
+  const targetIntensity = Math.min(
+    1,
+    (active ? (dominantSpeaker === "assistant" ? 0.2 : 0.1) : 0.06) +
+      smoothedVolume * (active ? 3.75 * speakerWeight : 1.6) +
+      volumeLevel * (active ? 0.22 * speakerWeight : 0.08) +
+      (phase === "connecting" ? 0.12 : 0)
+  );
+  const [siriIntensity, setSiriIntensity] = useState(targetIntensity);
+
+  useEffect(() => {
+    const damping = reducedMotion ? 0.4 : phase === "active" ? 0.14 : 0.24;
+    setSiriIntensity((previous) => previous + (targetIntensity - previous) * damping);
+  }, [targetIntensity, phase, reducedMotion]);
+
   const siriConfig = useMemo<IReactSiriwaveProps>(
     () => ({
       theme: "ios9",
       ratio: 1,
-      speed: active ? 0.1 + reactiveLevel * 0.14 : phase === "connecting" ? 0.08 : 0.04,
-      amplitude: active ? 0.5 + reactiveLevel * 2.6 : phase === "connecting" ? 0.72 : 0.3,
-      frequency: active ? 2.7 + reactiveLevel * 3.4 : phase === "connecting" ? 3.0 : 2.1,
-      color: "#67e8f9",
+      speed: active ? 0.14 + siriIntensity * 0.16 : phase === "connecting" ? 0.108 : 0.065,
+      amplitude: active ? 0.9 + siriIntensity * 3.3 : phase === "connecting" ? 1.05 : 0.45,
+      frequency: active ? 3.0 + siriIntensity * 3.1 : phase === "connecting" ? 3.2 : 2.15,
+      color: "#f2a46b",
       cover: true,
-      width: 2600,
-      height: 340,
+      width: 3600,
+      height: 460,
       autostart: true,
-      pixelDepth: 0.5,
-      lerpSpeed: 0.08,
+      pixelDepth: 0.48,
+      lerpSpeed: 0.12,
     }),
-    [active, phase, reactiveLevel]
+    [active, phase, siriIntensity]
   );
 
   return (
     <motion.div
       className={cn(
         "relative flex h-full min-h-[24rem] w-full flex-col overflow-hidden rounded-[1.8rem] border",
-        "border-sky-200/12 bg-[radial-gradient(circle_at_50%_38%,rgba(12,22,34,0.96),rgba(1,3,8,1)_66%)]",
+        "border-orange-200/12 bg-[radial-gradient(circle_at_50%_38%,rgba(20,12,8,0.96),rgba(1,1,1,1)_66%)]",
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_24px_60px_rgba(0,0,0,0.58)]"
       )}
       initial={false}
@@ -642,22 +660,22 @@ function SiriMode({
         ease: EASE_QUART_OUT,
       }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(34,211,238,0.035),transparent_36%,rgba(37,99,235,0.03)_72%,transparent)]" />
-      <ModePrelude mode="siri" phase={phase} accent="#67e8f9" reducedMotion={reducedMotion} />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(232,138,83,0.035),transparent_36%,rgba(120,113,108,0.03)_72%,transparent)]" />
+      <ModePrelude mode="siri" phase={phase} accent="#f59e0b" reducedMotion={reducedMotion} />
 
       <motion.div
         className="pointer-events-none absolute top-6 left-1/2 z-20 -translate-x-1/2 rounded-full border px-4 py-2 text-xs font-medium tracking-wide"
         style={{
-          borderColor: phase === "active" ? "rgba(125, 211, 252, 0.24)" : "rgba(255,255,255,0.08)",
+          borderColor: phase === "active" ? "rgba(232, 138, 83, 0.24)" : "rgba(255,255,255,0.08)",
           backgroundColor:
             phase === "active"
               ? "rgba(3, 10, 16, 0.86)"
               : "rgba(3, 8, 12, 0.8)",
-          color: "#e0f2fe",
+          color: "#f4efe9",
           boxShadow:
             phase === "active"
-              ? "0 0 18px rgba(56, 189, 248, 0.1)"
-              : "0 0 12px rgba(56, 189, 248, 0.06)",
+              ? "0 0 18px rgba(232, 138, 83, 0.1)"
+              : "0 0 12px rgba(232, 138, 83, 0.06)",
         }}
         animate={reducedMotion ? { opacity: 1 } : { opacity: phase === "idle" ? 0.72 : 1 }}
         transition={{ duration: 0.22, ease: EASE_QUART_OUT }}
@@ -665,15 +683,16 @@ function SiriMode({
         {phase === "connecting" ? "Carrier lock" : active ? "Live wave" : "Ready to call"}
       </motion.div>
 
-      <div className="absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 px-2 sm:px-4 lg:px-6">
+      <div className="absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 px-0 sm:px-1 lg:px-2">
         <motion.div
-          className="relative h-[clamp(220px,28vw,340px)] w-full overflow-hidden"
+          className="relative h-[clamp(300px,38vw,470px)] w-full overflow-hidden"
           animate={
             reducedMotion
-              ? { scaleX: 1, opacity: 1 }
+              ? { scaleX: 1, opacity: 1, y: 0 }
               : {
-                  scaleX: phase === "connecting" ? [0.992, 1.006, 0.992] : 1,
-                  opacity: phase === "idle" ? 0.94 : 1,
+                  scaleX: phase === "connecting" ? [0.996, 1.008, 0.996] : 1,
+                  opacity: phase === "idle" ? 0.95 : 1,
+                  y: phase === "connecting" ? [0, 2, 0] : 0,
                 }
           }
           transition={{
@@ -683,32 +702,26 @@ function SiriMode({
           }}
         >
           <motion.div
-            className="pointer-events-none absolute inset-y-[18%] left-[-12%] w-[24%] rounded-full bg-[radial-gradient(circle,rgba(103,232,249,0.2),transparent_68%)] blur-3xl"
+            className="pointer-events-none absolute inset-x-[4%] top-[40%] h-[18%] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(232,138,83,0.34),rgba(232,138,83,0.14)_34%,transparent_78%)] blur-2xl"
             animate={
               reducedMotion
-                ? { opacity: 0.45 }
+                ? { opacity: 0.3 + siriIntensity * 0.3 }
                 : {
-                    x:
-                      phase === "connecting"
-                        ? ["0%", "360%"]
-                        : active
-                          ? ["20%", "220%", "20%"]
-                          : "0%",
-                    opacity:
-                      phase === "connecting"
-                        ? [0.16, 0.44, 0.16]
-                        : active
-                          ? [0.08, 0.2, 0.08]
-                          : 0.04,
+                    opacity: 0.24 + siriIntensity * 0.54,
+                    scaleX: 0.96 + siriIntensity * 0.1,
                   }
             }
-          transition={{
-            duration: phase === "connecting" ? 1.35 : 4.5,
-            repeat: phase === "connecting" || phase === "active" ? Number.POSITIVE_INFINITY : 0,
-            ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
-          }}
+            transition={{ duration: 0.26, ease: EASE_QUART_OUT }}
           />
-          <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[linear-gradient(90deg,transparent,rgba(125,211,252,0.24),rgba(255,255,255,0.42),rgba(125,211,252,0.24),transparent)]" />
+          <motion.div
+            className="pointer-events-none absolute inset-x-[14%] top-[31%] h-[38%] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(232,138,83,0.12),rgba(232,138,83,0.06)_32%,transparent_72%)] blur-3xl"
+            animate={
+              reducedMotion
+                ? { opacity: phase === "active" ? 0.24 : 0.18 }
+                : { opacity: phase === "active" ? 0.18 + siriIntensity * 0.2 : 0.16 }
+            }
+            transition={{ duration: 0.32, ease: EASE_QUART_OUT }}
+          />
           <div className="relative h-full w-full overflow-hidden">
             <ReactSiriwave {...siriConfig} />
           </div>
@@ -721,31 +734,30 @@ function SiriMode({
         aria-label={active ? "End voice demo" : "Start voice demo"}
         className={cn(
           "absolute bottom-7 left-1/2 z-20 inline-flex -translate-x-1/2 items-center justify-center rounded-2xl border px-5 py-3",
-          "border-sky-200/18 bg-[rgba(8,15,24,0.74)] text-sky-50",
-          "shadow-[0_0_24px_rgba(56,189,248,0.1),inset_0_1px_0_rgba(255,255,255,0.04)]",
+          "border-orange-200/18 bg-[rgba(18,12,8,0.74)] text-orange-50",
+          "shadow-[0_0_24px_rgba(232,138,83,0.1),inset_0_1px_0_rgba(255,255,255,0.04)]",
           "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-          "hover:border-sky-100/35 hover:bg-[rgba(10,18,28,0.92)] hover:shadow-[0_0_28px_rgba(56,189,248,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
-          "focus-visible:border-sky-100 focus-visible:ring-3 focus-visible:ring-sky-200/55",
+          "hover:border-orange-100/35 hover:bg-[rgba(22,16,11,0.92)] hover:shadow-[0_0_28px_rgba(232,138,83,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
+          "focus-visible:border-orange-100 focus-visible:ring-3 focus-visible:ring-orange-200/55",
           "active:scale-[0.97]"
         )}
         whileHover={reducedMotion ? undefined : { scale: 1.04 }}
         whileTap={reducedMotion ? undefined : { scale: 0.965 }}
       >
         <motion.span
-          className="pointer-events-none absolute -inset-4 rounded-[1.35rem] border border-sky-200/14"
+          className="pointer-events-none absolute -inset-4 rounded-[1.35rem] border border-orange-200/14"
           animate={
             reducedMotion
               ? { opacity: phase === "connecting" ? 0.45 : 0 }
               : {
                   opacity: phase === "connecting" ? [0.16, 0.58, 0.16] : active ? 0.1 : 0,
                   scale: phase === "connecting" ? [0.94, 1.08, 0.94] : 1,
-                  rotate: phase === "connecting" ? 360 : 0,
                 }
           }
           transition={{
             duration: phase === "connecting" ? 1.1 : 2.4,
             repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
-            ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
+            ease: EASE_QUART_OUT,
           }}
         />
         {active ? <PhoneOff className="size-5" /> : <Mic className="size-5" />}
@@ -759,6 +771,7 @@ function GlobMode({
   phase,
   volumeLevel,
   smoothedVolume,
+  dominantSpeaker,
   reducedMotion,
   onToggleCall,
 }: {
@@ -766,139 +779,311 @@ function GlobMode({
   phase: VisualPhase;
   volumeLevel: number;
   smoothedVolume: number;
+  dominantSpeaker: "assistant" | "user" | "system" | "unknown";
   reducedMotion: boolean;
   onToggleCall: () => void;
 }) {
-  const scale = 1 + Math.min(0.14, smoothedVolume * 0.22 + volumeLevel * 0.04);
+  const speakerWeight =
+    dominantSpeaker === "assistant" ? 1.22 : dominantSpeaker === "user" ? 0.78 : 0.92;
+  const voiceEnergy = Math.min(
+    1,
+    smoothedVolume * (1.5 * speakerWeight) + volumeLevel * (0.14 * speakerWeight)
+  );
+  const phaseBoost = phase === "connecting" ? 0.32 : phase === "active" ? 0.18 : 0.06;
+  const morph = Math.min(1, voiceEnergy + phaseBoost);
+  const orbScale = 1 + Math.min(phase === "connecting" ? 0.072 : phase === "active" ? 0.05 : 0.018, morph * 0.09);
+  const drift = phase === "connecting" ? [0, -2, 0] : phase === "active" ? [0, -1, 0] : [0, -0.3, 0];
+  const phaseLabel = phase === "connecting" ? "Acquiring signal" : active ? "Live glob" : "Ready to call";
+  const fluidDuration = phase === "connecting" ? 3.2 : phase === "active" ? 4.8 : 10.8;
+  const glowTarget =
+    phase === "connecting"
+      ? 0.24 + voiceEnergy * 0.2
+      : active
+        ? 0.1 + voiceEnergy * 0.46
+        : 0.08;
+  const [assistantGlow, setAssistantGlow] = useState(glowTarget);
+
+  useEffect(() => {
+    const damping = reducedMotion ? 0.34 : phase === "active" ? 0.08 : 0.16;
+    setAssistantGlow((previous) => previous + (glowTarget - previous) * damping);
+  }, [glowTarget, phase, reducedMotion]);
 
   return (
-    <div
+    <motion.div
       className={cn(
         "relative flex h-full min-h-[24rem] w-full items-center justify-center overflow-hidden rounded-[1.8rem] border",
-        "border-fuchsia-200/12 bg-[radial-gradient(circle_at_50%_35%,rgba(13,16,27,0.98),rgba(2,4,8,1)_66%)]",
+        "border-orange-200/12 bg-[radial-gradient(circle_at_50%_34%,rgba(14,11,8,0.98),rgba(4,3,3,1)_54%,rgba(1,1,1,1)_100%)]",
         "shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_24px_60px_rgba(0,0,0,0.6)]"
       )}
+      initial={false}
+      animate={
+        reducedMotion
+          ? { scale: 1, rotate: 0 }
+          : {
+              scale: phase === "connecting" ? [1, 1.003, 1] : phase === "active" ? [1, 1.002, 1] : 1,
+              rotate: phase === "connecting" ? [0, 0.06, -0.06, 0] : 0,
+            }
+      }
+      transition={{
+        duration: phase === "connecting" ? 1.6 : 2.8,
+        repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+        ease: EASE_QUART_OUT,
+      }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(217,70,239,0.04),transparent_34%,rgba(34,211,238,0.04)_74%,transparent)]" />
-      <ModePrelude mode="glob" phase={phase} accent="#c084fc" reducedMotion={reducedMotion} />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(146deg,rgba(232,138,83,0.028),transparent_34%,rgba(122,103,88,0.022)_74%,transparent)]" />
 
       <motion.div
-        className="absolute h-[52vmin] w-[52vmin] max-h-[560px] max-w-[560px] rounded-full border"
-        style={{ borderColor: "rgba(192, 132, 252, 0.16)" }}
-        animate={
-          reducedMotion
-            ? { scale: 1, opacity: 0.2 }
-            : active
-              ? { scale: [0.92, 1.08, 0.92], opacity: [0.24, 0.04, 0.24] }
-              : phase === "connecting"
-                ? { scale: [0.94, 1.08, 0.94], opacity: [0.14, 0.36, 0.14], rotate: 360 }
-                : { scale: 1, opacity: 0.12 }
-        }
-        transition={{
-          duration: phase === "connecting" ? 2.2 : phase === "active" ? 2.8 : 1.8,
-          repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
-          ease: phase === "connecting" ? "linear" : EASE_EXPO_OUT,
+        className="pointer-events-none absolute top-6 left-1/2 z-20 -translate-x-1/2 rounded-full border px-4 py-2 text-xs font-medium tracking-wide"
+        style={{
+          borderColor: phase === "active" ? "rgba(232,138,83,0.24)" : "rgba(255,255,255,0.08)",
+          backgroundColor: phase === "active" ? "rgba(3,10,16,0.86)" : "rgba(3,8,12,0.8)",
+          color: "#f4efe9",
+          boxShadow:
+            phase === "active"
+              ? "0 0 18px rgba(232,138,83,0.1)"
+              : "0 0 12px rgba(232,138,83,0.06)",
         }}
-      />
+        animate={reducedMotion ? { opacity: 1 } : { opacity: phase === "idle" ? 0.7 : 1 }}
+        transition={{ duration: 0.22, ease: EASE_QUART_OUT }}
+      >
+        {phaseLabel}
+      </motion.div>
 
       <motion.div
-        className="absolute h-[64vmin] w-[64vmin] max-h-[700px] max-w-[700px] rounded-full border"
-        style={{ borderColor: "rgba(34, 211, 238, 0.1)" }}
+        className="relative flex h-[clamp(14.6rem,45vw,24.4rem)] w-[clamp(14.6rem,45vw,24.4rem)] items-center justify-center md:h-[clamp(17rem,34vw,25rem)] md:w-[clamp(17rem,34vw,25rem)]"
         animate={
           reducedMotion
-            ? { scale: 1, opacity: 0.14 }
-            : active
-              ? { scale: [0.9, 1.06, 0.9], opacity: [0.18, 0.02, 0.18] }
-              : phase === "connecting"
-                ? { scale: [0.93, 1.05, 0.93], opacity: [0.1, 0.28, 0.1], rotate: -360 }
-                : { scale: 1, opacity: 0.08 }
-        }
-        transition={{
-          duration: phase === "connecting" ? 2.8 : phase === "active" ? 3.2 : 2.4,
-          repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
-          ease: phase === "connecting" ? "linear" : EASE_EXPO_OUT,
-          delay: 0.16,
-        }}
-      />
-
-      <motion.div
-        className="relative h-[clamp(16rem,36vmin,26rem)] w-[clamp(16rem,36vmin,26rem)] rounded-full"
-        animate={
-          reducedMotion
-            ? { rotate: 0, scale: 1 }
+            ? { scale: 1, y: 0 }
             : {
-                rotate: phase === "connecting" ? 360 : phase === "active" ? 180 : 0,
-                scale,
-                y: phase === "connecting" ? [0, -1, 0] : phase === "active" ? [0, -0.8, 0] : 0,
+                scale: orbScale,
+                y: drift,
               }
         }
         transition={
           reducedMotion
             ? { duration: 0 }
             : {
-                rotate:
-                  phase === "connecting"
-                    ? { duration: 4.8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
-                    : phase === "active"
-                      ? { duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
-                      : { duration: 0.3, repeat: 0, ease: EASE_QUART_OUT },
+                scale: { duration: 0.22, ease: EASE_QUART_OUT },
                 y: {
-                  duration: phase === "active" ? 1.8 : 3.6,
-                  repeat: phase === "active" ? Number.POSITIVE_INFINITY : 0,
+                  duration: phase === "connecting" ? 2.8 : phase === "active" ? 4.2 : 6.5,
+                  repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
                   ease: EASE_QUART_OUT,
                 },
-                scale: { duration: 0.24, ease: EASE_QUART_OUT },
               }
         }
-        style={{
-          background:
-            "conic-gradient(from 210deg at 50% 50%, rgba(34,211,238,0.96) 0deg, rgba(192,132,252,0.96) 124deg, rgba(16,185,129,0.92) 244deg, rgba(34,211,238,0.96) 360deg)",
-          boxShadow:
-            phase === "active"
-              ? "0 0 78px rgba(56, 189, 248, 0.16)"
-              : "0 0 56px rgba(56, 189, 248, 0.1)",
-        }}
       >
-        <div className="absolute inset-4 rounded-full bg-[rgba(4,8,14,0.48)] backdrop-blur-sm" />
-        <div className="absolute inset-8 rounded-full border border-white/8" />
         <motion.div
-          className="absolute inset-[16%] rounded-full border border-white/10"
-          animate={
-            reducedMotion
-              ? { opacity: 0.7 }
-              : { opacity: phase === "connecting" ? [0.35, 0.72, 0.35] : [0.22, 0.5, 0.22] }
-          }
-          transition={{
-            duration: phase === "connecting" ? 0.95 : 1.45,
-            repeat: phase === "connecting" ? Number.POSITIVE_INFINITY : 0,
-            ease: EASE_QUART_OUT,
+          className="absolute -inset-[34%] rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(232,138,83,0.12) 0%, rgba(232,138,83,0.05) 32%, rgba(232,138,83,0) 74%)",
           }}
-        />
-        <motion.div
-          className="absolute inset-0"
           animate={
             reducedMotion
-              ? { rotate: 0, opacity: phase === "connecting" ? 0.7 : 0.45 }
+              ? { opacity: 0.08 + assistantGlow * 0.16, scale: 1 + assistantGlow * 0.06 }
               : {
-                  rotate: phase === "connecting" ? 360 : 180,
-                  opacity: phase === "connecting" ? [0.24, 0.58, 0.24] : [0.14, 0.28, 0.14],
+                  opacity: 0.08 + assistantGlow * 0.18,
+                  scale: 0.98 + assistantGlow * 0.16,
                 }
           }
           transition={{
-            rotate:
-              phase === "connecting"
-                ? { duration: 1.8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
-                : phase === "active"
-                  ? { duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "linear" }
-                  : { duration: 0.3, repeat: 0, ease: EASE_QUART_OUT },
-            opacity: {
-              duration: phase === "connecting" ? 1.05 : 2.6,
-              repeat: phase === "connecting" || phase === "active" ? Number.POSITIVE_INFINITY : 0,
-              ease: EASE_QUART_OUT,
-            },
+            duration: phase === "connecting" ? 0.5 : 0.34,
+            ease: EASE_QUART_OUT,
           }}
+        />
+
+        <motion.div
+          className="pointer-events-none absolute -inset-[12%] rounded-full blur-[44px] mix-blend-screen"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,146,66,0.42) 0%, rgba(255,146,66,0.18) 36%, rgba(255,146,66,0) 76%)",
+          }}
+          animate={
+            reducedMotion
+              ? { opacity: 0.09 + assistantGlow * 0.3, scale: 1 + assistantGlow * 0.08 }
+              : {
+                  opacity: 0.1 + assistantGlow * (phase === "connecting" ? 0.34 : 0.42),
+                  scale: 0.98 + assistantGlow * (phase === "connecting" ? 0.16 : 0.2),
+                }
+          }
+          transition={{
+            duration: phase === "connecting" ? 0.54 : 0.36,
+            ease: EASE_QUART_OUT,
+          }}
+        />
+
+        <motion.div
+          className="absolute inset-[10%] overflow-hidden rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 48%, rgba(16,14,14,0.96) 0%, rgba(5,5,6,0.99) 58%, rgba(1,1,1,1) 100%)",
+            boxShadow:
+              phase === "active"
+                ? "inset 0 -20px 44px rgba(0,0,0,0.6), 0 0 16px rgba(0,0,0,0.28)"
+                : "inset 0 -16px 36px rgba(0,0,0,0.6), 0 0 12px rgba(0,0,0,0.24)",
+            filter: "saturate(1.06) contrast(1.1)",
+          }}
+          animate={
+            reducedMotion
+              ? { scale: 1, opacity: 0.95, rotate: 0 }
+              : {
+                  scale: 0.992 + assistantGlow * (phase === "connecting" ? 0.05 : 0.038),
+                  opacity: 0.88 + assistantGlow * 0.1,
+                  rotate: phase === "connecting" ? 14 : phase === "active" ? 10 : 5,
+                }
+          }
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : {
+                  scale: { duration: phase === "connecting" ? 0.58 : 0.36, ease: EASE_QUART_OUT },
+                  opacity: { duration: phase === "connecting" ? 0.62 : 0.42, ease: EASE_QUART_OUT },
+                  rotate: {
+                    duration: phase === "connecting" ? 14 : phase === "active" ? 18 : 26,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "linear",
+                  },
+                }
+          }
         >
-          <div className="absolute left-1/2 top-[3%] size-3 -translate-x-1/2 rounded-full bg-fuchsia-100 shadow-[0_0_22px_rgba(232,121,249,0.55)]" />
+          <motion.div
+            className="absolute -inset-[18%] rounded-full blur-[40px] mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(circle at 40% 65%, rgba(255,82,0,0.72) 0%, rgba(255,82,0,0.38) 28%, rgba(255,82,0,0) 74%)",
+            }}
+            animate={
+              reducedMotion
+                ? { opacity: 0.3, x: 0, y: 0, scale: 1 }
+                : {
+                    opacity: 0.1 + assistantGlow * 0.34,
+                    x:
+                      phase === "connecting"
+                        ? [-18, 18, -18]
+                        : phase === "active"
+                          ? [-14, 14, -14]
+                          : [-8, 8, -8],
+                    y:
+                      phase === "connecting"
+                        ? [14, -14, 14]
+                        : phase === "active"
+                          ? [10, -10, 10]
+                          : [6, -6, 6],
+                    scale:
+                      phase === "connecting"
+                        ? [0.84, 1.2, 0.84]
+                        : phase === "active"
+                          ? [0.9, 1.12, 0.9]
+                          : [0.95, 1.03, 0.95],
+                }
+            }
+            transition={{
+              duration: fluidDuration,
+              repeat: reducedMotion || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+              ease: EASE_EXPO_IN_OUT,
+            }}
+          />
+
+          <motion.div
+            className="absolute -inset-[18%] rounded-full blur-[42px] mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(circle at 58% 52%, rgba(82,255,24,0.64) 0%, rgba(70,214,27,0.4) 30%, rgba(70,214,27,0) 76%)",
+            }}
+            animate={
+              reducedMotion
+                ? { opacity: 0.26, x: 0, y: 0 }
+                : {
+                    opacity: 0.08 + assistantGlow * 0.26,
+                    x:
+                      phase === "connecting"
+                        ? [16, -16, 16]
+                        : phase === "active"
+                          ? [12, -12, 12]
+                          : [7, -7, 7],
+                    y:
+                      phase === "connecting"
+                        ? [-15, 15, -15]
+                        : phase === "active"
+                          ? [-10, 10, -10]
+                          : [-6, 6, -6],
+                    scale:
+                      phase === "connecting"
+                        ? [0.86, 1.18, 0.86]
+                        : phase === "active"
+                          ? [0.9, 1.1, 0.9]
+                          : [0.95, 1.03, 0.95],
+                }
+            }
+            transition={{
+              duration: fluidDuration + 0.5,
+              repeat: reducedMotion || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+              ease: EASE_EXPO_IN_OUT,
+            }}
+          />
+
+          <motion.div
+            className="absolute -inset-[18%] rounded-full blur-[42px] mix-blend-screen"
+            style={{
+              background:
+                "radial-gradient(circle at 44% 30%, rgba(60,83,255,0.6) 0%, rgba(80,58,236,0.38) 32%, rgba(80,58,236,0) 78%)",
+            }}
+            animate={
+              reducedMotion
+                ? { opacity: 0.2 }
+                : {
+                    opacity: 0.08 + assistantGlow * 0.22,
+                    x:
+                      phase === "connecting"
+                        ? [-14, 14, -14]
+                        : phase === "active"
+                          ? [-10, 10, -10]
+                          : [-6, 6, -6],
+                    y:
+                      phase === "connecting"
+                        ? [12, -12, 12]
+                        : phase === "active"
+                          ? [8, -8, 8]
+                          : [5, -5, 5],
+                    scale:
+                      phase === "connecting"
+                        ? [0.86, 1.16, 0.86]
+                        : phase === "active"
+                          ? [0.9, 1.08, 0.9]
+                          : [0.95, 1.03, 0.95],
+                }
+            }
+            transition={{
+              duration: fluidDuration + 0.8,
+              repeat: reducedMotion || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+              ease: EASE_EXPO_IN_OUT,
+            }}
+          />
+
+          <motion.div
+            className="pointer-events-none absolute inset-0 rounded-full mix-blend-screen"
+            style={{
+              opacity: phase === "active" ? 0.08 : phase === "connecting" ? 0.06 : 0.03,
+              background:
+                "radial-gradient(circle at 54% 46%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.08) 22%, rgba(255,255,255,0) 56%)",
+            }}
+            animate={
+              reducedMotion
+                ? { opacity: phase === "active" ? 0.08 : 0.03 }
+                : {
+                    opacity: 0.03 + assistantGlow * 0.1,
+                    x: phase === "active" ? [-2, 2, -2] : [0, 1, 0],
+                    y: phase === "active" ? [2, -2, 2] : [0, -1, 0],
+                  }
+            }
+            transition={{
+              duration: phase === "active" ? 1.9 : 5.8,
+              repeat: reducedMotion || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+              ease: EASE_QUART_OUT,
+            }}
+          />
+
+          <div className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_34%_26%,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.04)_20%,transparent_44%),radial-gradient(circle_at_66%_74%,rgba(0,0,0,0.7)_0%,rgba(0,0,0,0.18)_34%,transparent_66%)]" />
         </motion.div>
       </motion.div>
 
@@ -907,39 +1092,62 @@ function GlobMode({
         onClick={onToggleCall}
         aria-label={active ? "End voice demo" : "Start voice demo"}
         className={cn(
-          "absolute bottom-6 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 rounded-xl border px-5 py-2.5",
-          "border-fuchsia-200/18 bg-[rgba(8,10,16,0.78)] text-fuchsia-50",
-          "shadow-[0_0_24px_rgba(168,85,247,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]",
+          "absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 rounded-xl border px-5 py-2.5 sm:bottom-6",
+          "border-orange-200/18 bg-[rgba(10,9,8,0.78)] text-orange-50",
+          "shadow-[0_0_24px_rgba(232,138,83,0.12),inset_0_1px_0_rgba(255,255,255,0.04)]",
           "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-          "hover:border-fuchsia-100/35 hover:bg-[rgba(10,12,18,0.92)] hover:shadow-[0_0_28px_rgba(168,85,247,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
-          "focus-visible:border-fuchsia-100 focus-visible:ring-3 focus-visible:ring-fuchsia-200/55",
+          "hover:border-orange-100/35 hover:bg-[rgba(14,12,10,0.92)] hover:shadow-[0_0_28px_rgba(232,138,83,0.16),inset_0_1px_0_rgba(255,255,255,0.05)]",
+          "focus-visible:border-orange-100 focus-visible:ring-3 focus-visible:ring-orange-200/55",
           "active:scale-[0.97]"
         )}
         whileHover={reducedMotion ? undefined : { scale: 1.03 }}
         whileTap={reducedMotion ? undefined : { scale: 0.965 }}
+        animate={
+          reducedMotion
+            ? { boxShadow: "0 0 16px rgba(232,138,83,0.08), inset 0 1px 0 rgba(255,255,255,0.04)" }
+            : {
+                boxShadow:
+                  phase === "connecting"
+                    ? [
+                        "0 0 12px rgba(232,138,83,0.08), inset 0 1px 0 rgba(255,255,255,0.04)",
+                        "0 0 20px rgba(232,138,83,0.14), inset 0 1px 0 rgba(255,255,255,0.05)",
+                        "0 0 12px rgba(232,138,83,0.08), inset 0 1px 0 rgba(255,255,255,0.04)",
+                      ]
+                    : phase === "active"
+                      ? [
+                          "0 0 14px rgba(232,138,83,0.09), inset 0 1px 0 rgba(255,255,255,0.04)",
+                          "0 0 19px rgba(232,138,83,0.12), inset 0 1px 0 rgba(255,255,255,0.05)",
+                          "0 0 14px rgba(232,138,83,0.09), inset 0 1px 0 rgba(255,255,255,0.04)",
+                        ]
+                      : "0 0 14px rgba(232,138,83,0.08), inset 0 1px 0 rgba(255,255,255,0.04)",
+              }
+        }
+        transition={{
+          duration: phase === "connecting" ? 0.9 : 2.4,
+          repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+          ease: EASE_QUART_OUT,
+        }}
       >
         <motion.span
-          className="pointer-events-none absolute -inset-4 rounded-[1rem] border border-fuchsia-200/14"
+          className="pointer-events-none absolute -inset-4 rounded-[1rem] border border-orange-200/10"
           animate={
             reducedMotion
-              ? { opacity: phase === "connecting" ? 0.45 : 0 }
+              ? { opacity: phase === "connecting" ? 0.4 : 0 }
               : {
-                  opacity: phase === "connecting" ? [0.16, 0.52, 0.16] : active ? 0.14 : 0,
-                  scale: phase === "connecting" ? [0.94, 1.09, 0.94] : active ? [1, 1.03, 1] : 1,
-                  rotate: phase === "connecting" ? 360 : 0,
+                  opacity: phase === "connecting" ? [0.06, 0.16, 0.06] : active ? 0.04 : 0,
+                  scale: phase === "connecting" ? [0.99, 1.016, 0.99] : active ? [1, 1.008, 1] : 1,
                 }
           }
           transition={{
-            duration: phase === "connecting" ? 1.2 : 2.2,
-            repeat: phase === "idle" ? 0 : Number.POSITIVE_INFINITY,
-            ease: phase === "connecting" ? "linear" : EASE_QUART_OUT,
+            duration: phase === "connecting" ? 1.1 : 2.9,
+            repeat: phase === "idle" || phase === "settled" ? 0 : Number.POSITIVE_INFINITY,
+            ease: EASE_QUART_OUT,
           }}
         />
         {active ? <PhoneOff className="size-4" /> : <Mic className="size-4" />}
         {active ? "End call" : "Start call"}
       </motion.button>
-
-    </div>
+    </motion.div>
   );
 }
 
@@ -988,6 +1196,9 @@ export default function ChatPearlDemoClient() {
     () => (interimCaption ? [...captions, interimCaption] : captions),
     [captions, interimCaption]
   );
+  const dominantSpeaker = (interimCaption?.role ??
+    captions[captions.length - 1]?.role ??
+    "unknown") as "assistant" | "user" | "system" | "unknown";
 
   const captionRows = useMemo(() => mergedCaptions.slice(-24), [mergedCaptions]);
 
@@ -1043,6 +1254,7 @@ export default function ChatPearlDemoClient() {
       phase,
       volumeLevel,
       smoothedVolume,
+      dominantSpeaker,
       reducedMotion: Boolean(prefersReducedMotion),
       onToggleCall: layer === "current" ? toggleCall : () => {},
     };
@@ -1065,7 +1277,7 @@ export default function ChatPearlDemoClient() {
       className="text-[color:var(--premium-foreground)]"
       style={{
         background:
-          "radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.08) 0%, rgba(2, 4, 8, 0.96) 32%, rgba(1, 3, 6, 1) 72%)",
+          "radial-gradient(circle at 50% 0%, rgba(232, 138, 83, 0.08) 0%, rgba(2, 1, 1, 0.96) 32%, rgba(1, 1, 1, 1) 72%)",
       }}
     >
       <PremiumViewport className="gap-4 px-4 pb-6 pt-5 sm:px-6 md:px-8 md:pb-8">
@@ -1073,8 +1285,8 @@ export default function ChatPearlDemoClient() {
           <div className="flex flex-col gap-3 px-4">
             <div className="flex flex-col gap-3 2xl:flex-row 2xl:items-start 2xl:justify-between">
               <div className="flex items-center gap-3">
-                <div className="inline-flex size-10 items-center justify-center rounded-xl border border-cyan-200/16 bg-cyan-300/8 shadow-[0_0_18px_rgba(34,211,238,0.08)]">
-                  <Sparkles className="size-4 text-cyan-200" />
+                <div className="inline-flex size-10 items-center justify-center rounded-xl border border-orange-200/16 bg-orange-300/8 shadow-[0_0_18px_rgba(232,138,83,0.08)]">
+                  <Sparkles className="size-4 text-orange-200" />
                 </div>
                 <div className="min-w-0">
                   <h1 className="text-xl font-semibold tracking-tight text-zinc-50 md:text-[2.5rem]">
@@ -1101,11 +1313,12 @@ export default function ChatPearlDemoClient() {
                   }
                   className="border-white/10 bg-black/60 text-zinc-100 shadow-[0_8px_20px_rgba(0,0,0,0.25)] backdrop-blur-md"
                 >
-                  {callState === "connecting" ? (
-                    <Loader2 className={cn("size-3", prefersReducedMotion ? "opacity-90" : "animate-spin")} />
-                  ) : (
-                    <Waves className="size-3" />
-                  )}
+                  <Waves
+                    className={cn(
+                      "size-3",
+                      callState === "connecting" && !prefersReducedMotion ? "animate-pulse" : "opacity-90"
+                    )}
+                  />
                   {statusText}
                 </PremiumStatusPill>
 
@@ -1114,8 +1327,8 @@ export default function ChatPearlDemoClient() {
                   className={cn(
                     "border-white/10 bg-white/[0.03] text-zinc-100",
                     "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-                    "hover:border-cyan-200/20 hover:bg-cyan-300/6 hover:text-white",
-                    "focus-visible:ring-cyan-200/55"
+                    "hover:border-orange-200/20 hover:bg-orange-300/6 hover:text-white",
+                    "focus-visible:ring-orange-200/55"
                   )}
                   onClick={() => setShowCaptions((prev) => !prev)}
                 >
@@ -1127,8 +1340,8 @@ export default function ChatPearlDemoClient() {
                   className={cn(
                     "border-white/10 bg-white/[0.03] text-zinc-100",
                     "transition-[transform,border-color,background-color,box-shadow,color] duration-200",
-                    "hover:border-cyan-200/20 hover:bg-cyan-300/6 hover:text-white",
-                    "focus-visible:ring-cyan-200/55"
+                    "hover:border-orange-200/20 hover:bg-orange-300/6 hover:text-white",
+                    "focus-visible:ring-orange-200/55"
                   )}
                   onClick={toggleMute}
                   disabled={!active}
@@ -1156,7 +1369,7 @@ export default function ChatPearlDemoClient() {
                         "h-auto min-w-0 rounded-[1rem] border border-white/8 bg-white/[0.02] px-3 py-2.5 text-center",
                         "transition-[transform,background-color,border-color,box-shadow,color] duration-200",
                         "hover:border-white/12 hover:bg-white/[0.05] hover:text-white",
-                        "focus-visible:border-cyan-200 focus-visible:ring-3 focus-visible:ring-cyan-200/50",
+                        "focus-visible:border-orange-200 focus-visible:ring-3 focus-visible:ring-orange-200/50",
                         "data-active:border-white/12 data-active:bg-white/[0.06] data-active:text-white",
                         "data-active:shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_12px_24px_rgba(0,0,0,0.25)]"
                       )}
@@ -1231,7 +1444,7 @@ export default function ChatPearlDemoClient() {
                     )}
                   >
                     <div className="mb-2 flex items-center justify-between">
-                      <p className="text-sm font-medium text-cyan-100">Live transcript</p>
+                      <p className="text-sm font-medium text-orange-100">Live transcript</p>
                       <p className="text-[11px] text-zinc-400">assistant + user</p>
                     </div>
 
@@ -1252,9 +1465,9 @@ export default function ChatPearlDemoClient() {
                             className={cn(
                               "rounded-lg border px-3 py-2 transition-[border-color,background-color,color,transform] duration-150",
                               line.role === "assistant" &&
-                                "border-[color:var(--caption-assistant-border)] bg-[color:var(--caption-assistant-bg)] text-cyan-50",
+                                "border-[color:var(--caption-assistant-border)] bg-[color:var(--caption-assistant-bg)] text-orange-50",
                               line.role === "user" &&
-                                "border-[color:var(--caption-user-border)] bg-[color:var(--caption-user-bg)] text-violet-50",
+                                "border-[color:var(--caption-user-border)] bg-[color:var(--caption-user-bg)] text-zinc-50",
                               line.role === "system" &&
                                 "border-[color:var(--caption-system-border)] bg-[color:var(--caption-system-bg)] text-amber-50"
                             )}

@@ -13,30 +13,30 @@ export default function FuturisticOrb({
   const orbScale = 1 + Math.min(0.24, volumeLevel * 0.4);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-slate-700/70 bg-[#070A14] p-6 text-slate-100 shadow-xl">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(14,165,233,0.35),transparent_36%),radial-gradient(circle_at_80%_85%,rgba(16,185,129,0.3),transparent_36%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(56,189,248,0.08),rgba(16,185,129,0.06),rgba(99,102,241,0.08))]" />
+    <div className="relative overflow-hidden rounded-3xl border border-stone-700/70 bg-[#0A0706] p-6 text-slate-100 shadow-xl">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(232,138,83,0.35),transparent_36%),radial-gradient(circle_at_80%_85%,rgba(120,113,108,0.3),transparent_36%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(232,138,83,0.08),rgba(120,113,108,0.06),rgba(251,191,36,0.08))]" />
 
       <div className="relative flex items-start justify-between">
         <div>
-          <p className="text-xs tracking-wide text-cyan-300 uppercase">Orb mode</p>
+          <p className="text-xs tracking-wide text-orange-300 uppercase">Orb mode</p>
           <h3 className="mt-1 text-xl font-semibold">Chat Pearl</h3>
           <p className="mt-1 text-sm text-slate-300">Futuristic AI showcase for premium client demos.</p>
         </div>
-        <Sparkles className={cn("size-6 text-cyan-300", active && "animate-pulse")} />
+        <Sparkles className={cn("size-6 text-orange-300", active && "animate-pulse")} />
       </div>
 
       <div className="relative mt-6 flex min-h-52 items-center justify-center">
         <span
           className={cn(
-            "voice-orb-ring absolute size-44 rounded-full border border-cyan-300/40",
+            "voice-orb-ring absolute size-44 rounded-full border border-orange-300/40",
             active && "voice-orb-ring-live"
           )}
           style={{ animationDelay: "0ms" }}
         />
         <span
           className={cn(
-            "voice-orb-ring absolute size-56 rounded-full border border-emerald-300/30",
+            "voice-orb-ring absolute size-56 rounded-full border border-stone-300/30",
             active && "voice-orb-ring-live"
           )}
           style={{ animationDelay: "260ms" }}
@@ -44,14 +44,14 @@ export default function FuturisticOrb({
 
         <div
           className={cn(
-            "voice-orb relative size-36 rounded-full bg-[radial-gradient(circle_at_30%_25%,#67e8f9,#06b6d4_48%,#0f172a_100%)] shadow-[0_0_35px_rgba(14,165,233,0.45)] transition-transform duration-200",
+            "voice-orb relative size-36 rounded-full bg-[radial-gradient(circle_at_30%_25%,#fbcb97,#e78a53_48%,#16120f_100%)] shadow-[0_0_35px_rgba(232,138,83,0.45)] transition-transform duration-200",
             active && "voice-orb-live",
-            isAssistantSpeaking && "shadow-[0_0_55px_rgba(34,211,238,0.65)]"
+            isAssistantSpeaking && "shadow-[0_0_55px_rgba(232,138,83,0.65)]"
           )}
           style={{ transform: `scale(${orbScale})` }}
         >
-          <div className="absolute inset-4 rounded-full border border-cyan-100/25" />
-          <div className="absolute inset-8 rounded-full border border-emerald-100/20" />
+          <div className="absolute inset-4 rounded-full border border-orange-100/25" />
+          <div className="absolute inset-8 rounded-full border border-stone-100/20" />
         </div>
       </div>
 
@@ -65,4 +65,3 @@ export default function FuturisticOrb({
     </div>
   );
 }
-

@@ -41,13 +41,13 @@ function RecentAppointments() {
     switch (status) {
       case "CONFIRMED":
         return (
-          <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+          <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">
             Confirmed
           </Badge>
         );
       case "COMPLETED":
         return (
-          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+          <Badge className="border border-orange-300/20 bg-orange-300/10 text-orange-200 hover:bg-orange-300/15">
             Completed
           </Badge>
         );

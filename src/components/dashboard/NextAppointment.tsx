@@ -27,19 +27,19 @@ async function NextAppointment() {
   const isToday = isSameDay(appointmentDate, new Date());
 
   return (
-    <Card className="border-cyan-300/20 bg-linear-to-br from-cyan-300/10 to-black/48 shadow-[0_14px_40px_rgba(0,0,0,0.4)] backdrop-blur-sm">
+    <Card className="border-orange-300/20 bg-linear-to-br from-orange-300/10 to-black/48 shadow-[0_14px_40px_rgba(0,0,0,0.4)] backdrop-blur-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-zinc-100">
-          <CalendarIcon className="size-5 text-cyan-300" />
+          <CalendarIcon className="size-5 text-orange-300" />
           Next Appointment
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Status Badge */}
         <div className="flex items-center justify-between">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/12 px-3 py-1">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
-            <span className="text-sm font-medium text-cyan-100">
+          <div className="inline-flex items-center gap-2 rounded-full border border-orange-300/30 bg-orange-300/12 px-3 py-1">
+            <div className="h-2 w-2 animate-pulse rounded-full bg-orange-300" />
+            <span className="text-sm font-medium text-orange-100">
               {isToday ? "Today" : "Upcoming"}
             </span>
           </div>
@@ -51,8 +51,8 @@ async function NextAppointment() {
         {/* Appointment Details */}
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-300/14">
-              <UserIcon className="size-4 text-cyan-200" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-300/14">
+              <UserIcon className="size-4 text-orange-200" />
             </div>
             <div>
               <p className="text-sm font-medium text-zinc-100">
@@ -65,8 +65,8 @@ async function NextAppointment() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-300/14">
-              <CalendarIcon className="size-4 text-cyan-200" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-300/14">
+              <CalendarIcon className="size-4 text-orange-200" />
             </div>
             <div>
               <p className="text-sm font-medium text-zinc-100">{formattedDate}</p>
@@ -77,8 +77,8 @@ async function NextAppointment() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-300/14">
-              <ClockIcon className="size-4 text-cyan-200" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-300/14">
+              <ClockIcon className="size-4 text-orange-200" />
             </div>
             <div>
               <p className="text-sm font-medium text-zinc-100">{nextAppointment.time}</p>

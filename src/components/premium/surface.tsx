@@ -11,7 +11,7 @@ const panelVariants = cva(
       tone: {
         base: "border-white/10 bg-[color:var(--premium-surface)] shadow-[0_22px_60px_rgba(0,0,0,0.45)]",
         strong:
-          "border-cyan-300/20 bg-[color:var(--premium-surface-strong)] shadow-[0_24px_80px_rgba(0,0,0,0.6)]",
+          "border-orange-200/20 bg-[color:var(--premium-surface-strong)] shadow-[0_24px_80px_rgba(0,0,0,0.6)]",
         subtle: "border-white/8 bg-black/28 shadow-[0_16px_42px_rgba(0,0,0,0.4)]",
       },
     },
@@ -27,10 +27,10 @@ const statusPillVariants = cva(
     variants: {
       tone: {
         idle: "border-white/18 bg-white/6 text-zinc-200",
-        connecting: "border-cyan-300/45 bg-cyan-400/12 text-cyan-100",
-        active: "border-emerald-300/45 bg-emerald-400/10 text-emerald-100",
+        connecting: "border-orange-300/45 bg-orange-400/12 text-orange-100",
+        active: "border-stone-300/45 bg-stone-400/10 text-stone-100",
         ended: "border-amber-300/45 bg-amber-400/10 text-amber-100",
-        error: "border-rose-300/45 bg-rose-400/10 text-rose-100",
+        error: "border-neutral-300/45 bg-neutral-400/10 text-neutral-100",
       },
     },
     defaultVariants: {
@@ -86,7 +86,7 @@ export function PremiumTranscriptDock({ className, ...props }: DivProps) {
     <PremiumPanel
       tone="subtle"
       className={cn(
-        "rounded-xl border-cyan-300/20 bg-black/62 p-3 shadow-[0_18px_44px_rgba(0,0,0,0.55)]",
+        "rounded-xl border-orange-200/20 bg-black/62 p-3 shadow-[0_18px_44px_rgba(0,0,0,0.55)]",
         className
       )}
       {...props}

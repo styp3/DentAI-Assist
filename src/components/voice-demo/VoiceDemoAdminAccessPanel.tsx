@@ -112,11 +112,10 @@ export default function VoiceDemoAdminAccessPanel({
             Save access settings
           </Button>
 
-          {status && <p className="text-sm text-emerald-600">{status}</p>}
+          {status && <p className="text-sm text-orange-500">{status}</p>}
           {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
       </div>
     </section>
   );
 }
-

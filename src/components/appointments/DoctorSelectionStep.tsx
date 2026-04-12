@@ -41,8 +41,8 @@ function DoctorSelectionStep({
         {dentists.map((dentist) => (
           <Card
             key={dentist.id}
-            className={`cursor-pointer border border-cyan-300/16 bg-black/45 transition-all hover:-translate-y-0.5 hover:border-cyan-300/28 hover:shadow-[0_18px_40px_rgba(0,0,0,0.42)] ${
-              selectedDentistId === dentist.id ? "ring-2 ring-cyan-400/75" : ""
+            className={`cursor-pointer border border-orange-300/16 bg-black/45 transition-all hover:-translate-y-0.5 hover:border-orange-300/28 hover:shadow-[0_18px_40px_rgba(0,0,0,0.42)] ${
+              selectedDentistId === dentist.id ? "ring-2 ring-orange-400/75" : ""
             }`}
             onClick={() => onSelectDentist(dentist.id)}>
             <CardHeader className="pb-4">
@@ -56,7 +56,7 @@ function DoctorSelectionStep({
                 />
                 <div className="flex-1">
                   <CardTitle className="text-lg text-zinc-100">{dentist.name}</CardTitle>
-                  <CardDescription className="font-medium text-cyan-300">
+                  <CardDescription className="font-medium text-orange-300">
                     {dentist.speciality || "General Dentistry"}
                   </CardDescription>
                   <div className="flex items-center gap-2 mt-2">
@@ -85,7 +85,7 @@ function DoctorSelectionStep({
                 {dentist.bio ||
                   "Experienced dental professional providing quality care."}
               </p>
-              <Badge className="border-cyan-300/28 bg-cyan-300/12 text-cyan-100 hover:bg-cyan-300/18" variant="outline">
+              <Badge className="border-orange-300/28 bg-orange-300/12 text-orange-100 hover:bg-orange-300/18" variant="outline">
                 Licensed Professional
               </Badge>
             </CardContent>

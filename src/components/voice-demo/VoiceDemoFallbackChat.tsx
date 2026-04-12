@@ -90,7 +90,7 @@ export default function VoiceDemoFallbackChat({ enabled }: VoiceDemoFallbackChat
               "rounded-xl px-3 py-2 text-sm",
               message.role === "assistant"
                 ? "border border-amber-200/80 bg-amber-100/60 text-amber-950 dark:border-amber-900/70 dark:bg-amber-900/40 dark:text-amber-100"
-                : "border border-cyan-200/80 bg-cyan-50 text-cyan-950 dark:border-cyan-900/70 dark:bg-cyan-950/30 dark:text-cyan-100"
+                : "border border-orange-200/80 bg-orange-50 text-orange-950 dark:border-orange-900/70 dark:bg-orange-950/30 dark:text-orange-100"
             )}
           >
             <p className="mb-1 text-[11px] font-medium uppercase tracking-wide opacity-70">

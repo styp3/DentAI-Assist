@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 function Header() {
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 h-16 border-b border-cyan-300/14 bg-black/56 px-6 py-2 backdrop-blur-xl">
+    <nav className="fixed top-0 right-0 left-0 z-50 h-16 border-b border-orange-300/14 bg-black/56 px-6 py-2 backdrop-blur-xl">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -21,17 +21,17 @@ function Header() {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="#how-it-works"
-            className="text-zinc-400 transition-colors hover:text-cyan-100">
+            className="text-zinc-400 transition-colors hover:text-orange-100">
             How it Works
           </a>
           <a
             href="#pricing"
-            className="text-zinc-400 transition-colors hover:text-cyan-100">
+            className="text-zinc-400 transition-colors hover:text-orange-100">
             Pricing
           </a>
           <a
             href="#about"
-            className="text-zinc-400 transition-colors hover:text-cyan-100">
+            className="text-zinc-400 transition-colors hover:text-orange-100">
             About
           </a>
         </div>
