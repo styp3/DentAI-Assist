@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:clean": "rm -f .next/dev/lock && next dev --turbopack",
     "build": "prisma generate && next build --turbopack",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
+    "demo:preflight": "node scripts/demo-preflight.mjs",
+    "demo:preflight:routes": "node scripts/demo-preflight.mjs --with-routes",
     "demo:reset": "node scripts/reset-demo.mjs"
   },
   "dependencies": {

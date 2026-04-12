@@ -1,9 +1,10 @@
 # Chat Pearl TODO Tracker
 
-Use this checklist during implementation/maintenance of the `/pro` voice demo.
+Use this checklist during implementation/maintenance of Chat Pearl (`/chat-pearl`) with access control managed from `/pro`.
 
 ## Core Delivery
 - [x] Add admin-only demo section to `/pro` while keeping pricing/payment visible.
+- [x] Add dedicated full-page Chat Pearl route at `/chat-pearl`.
 - [x] Gate access by Clerk `publicMetadata.role === "admin"` with `ADMIN_EMAIL` fallback.
 - [x] Build modular voice demo components under `src/components/voice-demo/`.
 - [x] Add three manual-switch variants (no auto-rotation):
@@ -21,10 +22,11 @@ Use this checklist during implementation/maintenance of the `/pro` voice demo.
 - [x] Add session summary card for demo wrap-up.
 
 ## Validation
-- [ ] Run local manual smoke test on `/pro` as admin and non-admin users.
+- [ ] Run local manual smoke test on `/pro` + `/chat-pearl` as admin and non-admin users.
 - [ ] Validate tester access toggle + allowlist behavior.
 - [ ] Validate mic-denied scenario triggers fallback text chat.
 - [ ] Validate on mobile viewport and desktop viewport.
+- [x] Verify signed-out route behavior (`/` 200, `/pro` 307 -> `/`, `/chat-pearl` 307 -> `/`).
 - [x] Run `npm run build`.
 
 ## Future Enhancements (Backlog)

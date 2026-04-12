@@ -9,14 +9,14 @@ Read:
 - `docs/CHAT_PEARL_TODO.md`
 
 Current state:
-1. Chat Pearl demo is implemented on `/pro`.
+1. Chat Pearl live demo is implemented on `/chat-pearl`, with `/pro` as access-control + launch surface.
 2. Demo visibility:
-   - admins always,
-   - selected tester emails when admin enables tester access.
+   - admins always can access `/chat-pearl`,
+   - selected tester emails can access `/chat-pearl` when admin enables tester access.
 3. Admin access panel on `/pro` can update tester toggle + allowlist.
-3. Pricing/payment section remains visible on `/pro`.
-4. Live captions are in-memory only (no local persistence).
-5. Three manual tabbed variants exist:
+4. Pricing/payment section remains visible on `/pro`.
+5. Live captions are in-memory only (no local persistence).
+6. Three manual tabbed variants exist:
    - Premium Medical Clean
    - Futuristic AI Orb
    - Warm Dental Friendly

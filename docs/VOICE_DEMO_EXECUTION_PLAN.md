@@ -1,12 +1,12 @@
 # Voice Demo Execution Plan (Implemented Baseline)
 
 ## Goal
-Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client walkthroughs, while preserving the existing pricing/payment section.
+Deliver a premium interactive **Chat Pearl** demo on `/chat-pearl` for dentist client walkthroughs, with `/pro` as the access-control and launch surface while preserving pricing/payment there.
 
 ## Locked Decisions
 - Access:
   - Signed-in users can access `/pro`.
-  - Demo widget is visible to:
+  - Signed-in users can open `/chat-pearl` only if they are:
     - admins always,
     - selected tester emails when tester access toggle is enabled by admin.
   - Admin check priority:
@@ -37,8 +37,10 @@ Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client w
 ## Implemented Architecture
 - Route integration:
   - `src/app/pro/page.tsx`
-  - Adds Chat Pearl section above pricing for eligible users.
+  - Adds Chat Pearl launch section above pricing for eligible users.
   - Adds admin access panel to manage tester toggle + allowlist.
+  - `src/app/chat-pearl/page.tsx`
+  - Enforces server-side access gate and renders dedicated full-page Chat Pearl stage.
 - Access config persistence:
   - `AppSetting` table in Prisma (`app_settings`)
   - Settings keys:
@@ -68,9 +70,9 @@ Deliver a premium interactive **Chat Pearl** demo on `/pro` for dentist client w
   - Added dedicated voice visual classes and reduced-motion behavior in `src/app/globals.css`
 
 ## Acceptance Checklist
-- Admin sees Chat Pearl on `/pro`
-- Selected tester emails can access Chat Pearl when admin enables toggle
-- Non-selected non-admin users do not see Chat Pearl
+- Admin sees Chat Pearl launch card on `/pro` and can open `/chat-pearl`
+- Selected tester emails can access `/chat-pearl` when admin enables toggle
+- Non-selected non-admin users cannot access `/chat-pearl`
 - Pricing/payment section remains visible on `/pro`
 - Start/end call works
 - Mute toggle works

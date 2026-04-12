@@ -14,7 +14,7 @@
 - 📩 **Email Notifications** — Booking confirmations via Resend
 - 📊 **Admin Dashboard** — Manage doctors & appointments
 - 🗣️ **AI Voice Agent** — Powered by VAPI (Pro Plans only)
-- 💎 **Chat Pearl Demo on `/pro`** — Admin-only interactive voice showcase with 3 modern styles + live captions
+- 💎 **Chat Pearl Demo on `/chat-pearl`** — Premium interactive voice showcase with 3 modern styles + live captions (launched from `/pro`)
 - 🧰 **Tester Access Controls** — Admin toggle + allowlist for selected non-admin Chat Pearl testers
 - 💬 **Mic Fallback Mode** — Text-based fallback chat when browser mic permission is blocked
 - 💳 **Subscription Plans** — Free, Basic ($9/mo), Pro ($19/mo) via Clerk Billing
@@ -28,6 +28,7 @@
 ## 📚 Project Docs
 
 - Demo runbook: [`docs/DEMO_RUNBOOK.md`](./docs/DEMO_RUNBOOK.md)
+- Demo operator script: [`docs/DEMO_OPERATOR_SCRIPT.md`](./docs/DEMO_OPERATOR_SCRIPT.md)
 - Agent implementation guide: [`AGENTS.md`](./AGENTS.md)
 - Security/key rotation: [`docs/SECURITY_KEYS.md`](./docs/SECURITY_KEYS.md)
 - Deferred tasks: [`docs/TODO.md`](./docs/TODO.md)
@@ -143,6 +144,8 @@ npm run demo:reset -- --yes
 - Resend test-mode accounts may only send to allowed recipients.
 - For unrestricted sending, verify a domain in Resend and use a sender from that domain.
 - If you want stable demos even when email providers are flaky, set `DEMO_MODE=true` to mock successful email sends.
+- Run `npm run demo:preflight` before live demos to verify required env keys and DB reachability.
+- Run `npm run demo:preflight:routes` (while app is running) for quick route smoke checks.
 
 ---
 
@@ -158,7 +161,8 @@ dentai-assist/
 │   │   ├── appointments/      # Booking system
 │   │   ├── dashboard/         # User dashboard
 │   │   ├── voice/             # AI voice agent
-│   │   ├── pro/               # Pricing + Chat Pearl admin demo
+│   │   ├── pro/               # Pricing + Chat Pearl access control hub
+│   │   ├── chat-pearl/        # Dedicated Chat Pearl full-page demo
 │   │   └── api/               # API routes
 │   ├── components/
 │   │   ├── admin/             # Admin components
@@ -167,7 +171,7 @@ dentai-assist/
 │   │   ├── emails/            # Email templates
 │   │   ├── landing/           # Landing page sections
 │   │   ├── voice/             # Voice agent components
-│   │   ├── voice-demo/        # Chat Pearl /pro demo components
+│   │   ├── voice-demo/        # Shared Chat Pearl demo components
 │   │   └── ui/                # Shadcn UI components
 │   ├── hooks/                 # TanStack Query hooks
 │   ├── lib/
@@ -192,7 +196,8 @@ dentai-assist/
 | `/dashboard` | User dashboard |
 | `/appointments` | Book appointments |
 | `/voice` | AI voice agent (Pro only) |
-| `/pro` | Pricing + admin-only Chat Pearl demo |
+| `/pro` | Pricing + Chat Pearl access control hub |
+| `/chat-pearl` | Dedicated Chat Pearl premium voice demo |
 | `/admin` | Admin dashboard |
 
 ---
